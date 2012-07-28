@@ -1,0 +1,18 @@
+<h1>Identification</h1>
+
+<%= form_for(:session, :url => sessions_path) do |f| %>
+
+  <div class="field">
+    <%= f.label :username, "Pseudonyme" %><br />
+    <%= f.text_field :username %>
+  </div>
+  <div class="field">
+    <%= f.label :password, "Mot de passe" %><br />
+    <%= f.password_field :password %>
+  </div>
+  <div class="actions">
+    <%= f.submit "S'identifier" %>
+  </div>
+<% end %>
+
+<p>Pas encore inscrit ? <%= link_to "S'inscrire !", signup_path %></p>

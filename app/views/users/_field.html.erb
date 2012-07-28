@@ -1,0 +1,52 @@
+
+<!--
+# Table name: users
+#
+#  id                 :integer         not null, primary key
+#  username           :string(255)
+#  name               :string(255)
+#  address            :text
+#  phone_number       :string(255)
+#  email              :string(255)
+#  other              :text
+#  admin              :boolean         default(FALSE)
+#  encrypted_password :string(255)
+#  salt               :string(255)
+#  created_at         :datetime        not null
+#  updated_at         :datetime        not null
+-->
+
+<%= render 'shared/error_messages', :object => f.object %>
+<div class="field">
+   <%= f.label :username, "Pseudonyme*" %> <br />
+   <%= f.text_field :username %>
+</div>
+<div class="field">
+   <%= f.label :name, "Nom*" %> <br />
+   <%= f.text_field :name %>
+</div>
+<div class="field">
+   <%= f.label :address, "Adresse" %> <br />
+   <%= f.text_area :address %>
+</div>
+<div class="field">
+   <%= f.label :phone_number, "Téléphone" %> <br />
+   <%= f.telephone_field :phone_number %>
+</div>
+<div class="field">
+   <%= f.label :email, "E-Mail" %> <br />
+   <%= f.text_field :email %>
+</div> 
+<div class="field">
+   <%= f.label :other, "Autre" %> <br />
+   <%= f.text_area :other %>
+</div>
+<div class="field">
+   <%= f.label :password, "Mot de passe*" %> <br />
+   <%= f.password_field :password %>
+</div>
+
+<div class="field">
+   <%= f.label :password_confirmation, "Confirmation mot de passe*" %> <br />
+   <%= f.password_field :password_confirmation %>
+</div>

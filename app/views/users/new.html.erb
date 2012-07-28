@@ -1,0 +1,8 @@
+<h1>Inscription</h1>
+
+<%= form_for(@user) do |f| %>
+    <%=render 'field', :f => f %>
+    <div class="actions">
+       <%=f.submit "Inscription" %> <br />
+    </div>
+<% end %>
