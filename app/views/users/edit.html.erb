@@ -1,2 +1,9 @@
-<h1>Users#edit</h1>
-<p>Find me in app/views/users/edit.html.erb</p>
+<h1>Edition du profil</h1>
+
+<%= form_for(@user) do |f| %>
+  <%=render 'field', :f => f %>
+
+  <div class="actions">
+     <%= f.submit "Update" %>
+  </div>
+<% end %>
