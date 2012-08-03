@@ -15,7 +15,8 @@ PediatricApp::Application.configure do
   config.assets.compress = true
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
-  config.assets.compile = false
+  # Modif false en true : Fafa 04 aout 2012
+  config.assets.compile = true
 
   # Generate digests for assets URLs
   config.assets.digest = true

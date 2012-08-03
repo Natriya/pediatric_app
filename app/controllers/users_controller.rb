@@ -1,8 +1,12 @@
 class UsersController < ApplicationController
 
+
+  include UsersHelper
+  
   before_filter :authenticate, :except => [:show, :new, :create]
+  before_filter :admin_create_user, :only => [:new]
   before_filter :correct_user, :only => [:edit, :update]
-  before_filter :admin_user, :only => [:destroy]
+  before_filter :admin_user, :only => [:index, :destroy]
 
 
   def new
@@ -16,15 +20,32 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user= User.new(params[:user])
-    if @user.save
-        sign_in @user
-        flash[:success] = "Bienvenue dans l'Application Pediatrie!"
-        redirect_to root_path
-    else
-        @titre = "Inscription"
-        render 'new'
-    end
+    if params[:bascule]
+        user = User.find_by_id(params[:bascule][:b_user_id])
+        user.toggle!(:admin)
+        flash[:success] = "Utilisateur #{user.username} bascule avec succes!"
+
+        redirect_to users_path
+    else  
+        @user= User.new(params[:user])
+        users_exist_before_save = users_exist?
+        if !users_exist_before_save
+             @user.toggle(:admin)
+        end
+        if @user.save
+            if !users_exist_before_save
+               sign_in @user
+               flash[:success] = "Bienvenue dans l'Application Pediatrie!"
+               redirect_to root_path
+            else
+                flash[:success] = "Nouvel Utilisateur cree avec succes!"
+                redirect_to users_path
+             end
+        else
+            @titre = "Inscription"
+            render 'new'
+        end
+     end
   end
 
   def edit
@@ -42,9 +63,18 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    User.find(params[:id]).destroy
-    flash[:success] = "Utilistaeur supprime."
-    redirect_to users_path
+    user_to_destroy = User.find(params[:id])
+    if current_user?(user_to_destroy)
+       flash[:error] = "Echec : Vous ne pouvez pas vous supprimer vous meme"
+       redirect_to users_path
+    else
+       user_to_destroy.destroy
+       flash[:success] = "Utilistaeur supprime."
+       redirect_to users_path
+    end
+  end
+  
+  def toggle_admin
   end
   
   private
@@ -55,7 +85,13 @@ class UsersController < ApplicationController
     end
 
     def admin_user
-      redirect_to(root_path) unless current_user.admin?
+      redirect_to(root_path) unless (!current_user.nil? and current_user.admin?)
+    end
+    
+    def admin_create_user
+      if users_exist?
+         admin_user
+      end
     end
   
   

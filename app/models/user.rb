@@ -17,6 +17,8 @@ class User < ActiveRecord::Base
   validates :password, :presence => true,
                        :confirmation => true,
                        :length => { :within => 6..40 }
+                    #   :if => :password_validation_required?
+
                        
   before_save :encrypt_password
   
@@ -47,7 +49,10 @@ class User < ActiveRecord::Base
   
     def encrypt_password
       self.salt = make_salt if new_record?
-      self.encrypted_password = encrypt(password)
+      self.valid?
+      if !self.errors[:password].any?
+           self.encrypted_password = encrypt(password)
+      end
     end
 
     def encrypt(string)
@@ -61,6 +66,11 @@ class User < ActiveRecord::Base
     def secure_hash(string)
       Digest::SHA2.hexdigest(string)
     end
+    
+    def password_validation_required?
+         encrypted_password.blank? || !@password.blank?
+    end
+
   
 end
 # == Schema Information

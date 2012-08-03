@@ -1,11 +1,25 @@
-<h1>Tous les utilisateurs</h1>
+<h1>Ajouter un utilisateurs</h1>
+
+<%= link_to "Ajouter Utilisateur", signup_path, :class => "signup_button round" %>
+
+<h1>Liste des utilisateurs</h1>
 
 <%= will_paginate %>
 
-<ul class="users">
-  <% @users.each do |user| %>
-    <%= render user %>
-  <% end %>
-</ul>
+<table border="1">
+  <tr>
+      <th>Pseudonyme</th>
+      <th>Nom</th>
+      <th>Profile</th>
+      <th>Basculer Profile</th>
+      <th>Supprimer</th>
+  </tr>
+  
+     <% @users.each do |user| %>
+       <%= render user %>
+     <% end %>
+  
 
-<%= will_paginate %>
+</table>
+
+<%= will_paginate %> 

@@ -1,5 +1,26 @@
-    <h1>Sample App</h1>
+<% if signed_in? %>
+   TODO : Menu Pediatrie
+   
+<% elsif users_exist? %>
+    <!-- Si il n'y a aucun utilisateurs dans la base
+         Alors on propose une première inscription : c'est alors un administrateur
+         Sinon on ne propose que de pouvoir s'authentifier
+         A noter que c'est l'administrateur qui pourra ajouter des utilisateurs
+     -->
+         
     <p>
-      C'est la page d'accueil de l'Application Exemple du
-      <a href="http://railstutorial.org/">Tutoriel Ruby on Rails</a>.
+        Bienvenue dans l'application Pediatrie. <br />
+        Veuillez vous identifier. 
     </p>
+    <%= link_to "S'identifier", signin_path, :class => "signup_button round" %>
+    
+<% else %>
+
+    <p>
+      Bienvenue dans l'application Pediatrie. <br /> 
+      Auncun utilisateur n'existe. <br />
+      Veuillez créer le premier utilisateur (administrateur)
+    </p>
+
+    <%= link_to "S'Enregistrer", signup_path, :class => "signup_button round" %>
+<% end %>
