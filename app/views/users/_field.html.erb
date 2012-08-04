@@ -16,7 +16,9 @@
 #  updated_at         :datetime        not null
 -->
 
-<%= render 'shared/error_messages', :object => f.object %>
+<!-- <= render 'shared/error_messages', :object => f.object %> -->
+
+<%= f.error_messages %>
 <div class="field">
    <%= f.label :username, "Pseudonyme*" %> <br />
    <%= f.text_field :username %>

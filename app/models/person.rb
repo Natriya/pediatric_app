@@ -1,5 +1,5 @@
 class Person < ActiveRecord::Base
-  attr_accessible :address, :birthday, :cell_phone_number, :email, :name, :sex_male, :surname
+  attr_accessible :address, :birthday, :cell_phone_number, :email, :name, :sex, :surname
 
   belongs_to :father, :class_name => 'Person'
   belongs_to :mother, :class_name => 'Person'
@@ -7,8 +7,13 @@ class Person < ActiveRecord::Base
   has_many :children_of_father, :class_name => 'Person', :foreign_key => 'father_id'
   has_many :children_of_mother, :class_name => 'Person', :foreign_key => 'mother_id'
   has_many :children_of_tutor, :class_name => 'Person', :foreign_key => 'tutor_id'
+  
+  
+  validates :name, :surname, :presence => true
+  validates :sex, :inclusion => { :in => %w(M F) }
+  
   def children
-     children_of_mother + children_of_father
+     children_of_mother + children_of_father + children_of_tutor
   end
 
 end

@@ -18,6 +18,13 @@ USER
 
 Médical
 
+
+ADDRESS
+   Address(Texte)
+   Phone (9 caractères)
+   
+   HAS_MANY::PERSON
+
 PERSON
   Name * (50 caractères)
   Surname  * (50 caractères)
@@ -28,74 +35,42 @@ PERSON
   email
 
   BELONGS_TO::ADDRESS
-
-
-ADDRESS
-   Address(Texte)
-   Phone (9 caractères)
-   
-   HAS_MANY::PERSON
-
-
-class Employee < ActiveRecord::Base
-  has_many :subordinates, :class_name => "Employee",
-    :foreign_key => "manager_id"
-  belongs_to :manager, :class_name => "Employee"
-end
-
-class Person < ActiveRecord::Base
-  belongs_to :father, :class_name => 'Person'
-  belongs_to :mother, :class_name => 'Person'
-  has_many :children_of_father, :class_name => 'Person', :foreign_key => 'father_id'
-  has_many :children_of_mother, :class_name => 'Person', :foreign_key => 'mother_id'
-  def children
-     children_of_mother + children_of_father
-  end
-end
-
-
-class Person < ActiveRecord::Base
-  has_one :father, :class_name => 'Person', :foreign_key => 'father_id'
-  has_one :mother, :class_name => 'Person', :foreign_key => 'mother_id'
-  has_many :children, :class_name => 'Person'
-end
-
-
-PERSON
-
-
-FATHER < PERSON
-
-MOTHER < PERSON
-
-TUTOR < PERSON
-
-PATIENT < PERSON
-PERSONNE_TYPE::Enfant
-Père (PERSONNE)
-Mère (PERSONNE)
-
+  HAS_MANY::CONSULTATION
+  HAS_ONE::ANTECEDENT
 
 
 CONSULTATION
   Date* (Date)
   Interrogation (Texte)
-  Examen Clinique (Texte)
+  Clinic_Exam (Texte)
   Conclusion (Texte)
   Bilan (Texte)
   Diagnostic (Texte)
   Traitements (Texte)
+  
+  BELONGS_TO::PERSON
+  HAS_ONE::PAYMENT
 
-ANTECEDENTS
+ANTECEDENT
   Personnel (Texte)
   Familiaux (Texte)
+  
+  BELONGS_TO::PERSON
+  
 
-PAIEMENT
+PAYMENT
   Espece (numerique)
   Bon Paiement (BON)
+  
+  BELONG_TO::CONSULTATION
+  HAS_ONE::BON
 
 
 SOCIETE GARANTIE
+  Name
+  Type (IPM|ASSURANCE)
+
+DATA
   IPM (SENELEC, SDE, BOKK, PETITE COTE, SSPT)
   ASSURANCE ( ASCOMA, SALAMA)
 
@@ -104,10 +79,10 @@ SOCIETE GARANTIE
 
 BON
   Matricule(numérique)
-  Adherent (PERSONNE::Pere/ PERSONNE::Mere)
+  BELONGS_TO:: PERSON #Adherent (PERSONNE::Pere/ PERSONNE::Mere)
   Societe (Texte)
   Profession (Texte)
-  Beneficiaire(PERSONNE::Enfant)
   Garantie (IPM/ASSURANCE)
 
+  BELONG_TO::SOCIETE_GARANTIE
 

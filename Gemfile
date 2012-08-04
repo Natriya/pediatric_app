@@ -8,10 +8,12 @@ gem 'rails', '3.2.6'
 gem 'jquery-rails'
 
 gem 'will_paginate'
+gem "dynamic_form"
 
-#gem 'sqlite3'
-#gem 'sqlite3-ruby', :require => 'sqlite3'
-gem 'activerecord-postgresql-adapter'
+gem 'sqlite3'
+gem 'sqlite3-ruby', :require => 'sqlite3'
+#gem 'activerecord-postgresql-adapter'
+
 
 
 group :development do

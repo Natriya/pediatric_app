@@ -6,6 +6,9 @@ RAILS_DEV_HOME="/media/Donnees/developpements/rubyonrails"
 APP_HOME="${RAILS_DEV_HOME}/pediatric_app"
 
 
+##### heroku
+heroku run urake db:setup ## to re-init db
+
 # application creation
 rails new pediatric_app
 

@@ -21,9 +21,9 @@ ActiveRecord::Schema.define(:version => 20120804105031) do
   end
 
   create_table "people", :force => true do |t|
-    t.string   "name",                                 :null => false
-    t.string   "surname",                              :null => false
-    t.boolean  "sex_male",          :default => false
+    t.string   "name",              :null => false
+    t.string   "surname",           :null => false
+    t.string   "sex",               :null => false
     t.date     "birthday"
     t.text     "address"
     t.string   "cell_phone_number"
@@ -31,8 +31,8 @@ ActiveRecord::Schema.define(:version => 20120804105031) do
     t.integer  "father_id"
     t.integer  "mother_id"
     t.integer  "tutor_id"
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
   end
 
   create_table "users", :force => true do |t|

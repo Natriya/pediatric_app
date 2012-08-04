@@ -3,15 +3,15 @@ class User < ActiveRecord::Base
   attr_accessible :address, :email, :name, :other, :phone_number, :username, :password, :password_confirmation
   
 
-#  email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   
   validates :username, :presence => true,
                        :uniqueness => { :case_sensitive => false }
                     
-  validates :name, :presence => true,
-                   :length   => { :maximum => 200 }
+  validates :name, :presence => true
+#                   :length   => { :maximum => 200 }
 
-#  validates :email,  :format   => { :with => email_regex }
+  validates :email,  :format   => { :with => email_regex },  :allow_blank => true
   
   # Cree automatique l'attribut virtuel 'password_confirmation'.
   validates :password, :presence => true,
