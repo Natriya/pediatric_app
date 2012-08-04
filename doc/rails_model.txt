@@ -1,0 +1,106 @@
+
+
+Last Update : 04 august 2012 / 12:30
+
+USER
+  ID
+  Username
+  Name
+  Address
+  Phone
+  eMail
+  Other
+
+  admin
+  Encrypted_Password
+  salt
+
+
+Médical
+
+PERSON
+  Name * (50 caractères)
+  Surname  * (50 caractères)
+  Sex * (M/F)
+  #Type# * (Pere/Mere/Tuteur/Enfant)
+  Birthday  (Date)
+  Cell_phone (9 caractères)
+  email
+
+  BELONGS_TO::ADDRESS
+
+
+ADDRESS
+   Address(Texte)
+   Phone (9 caractères)
+   
+   HAS_MANY::PERSON
+
+
+class Employee < ActiveRecord::Base
+  has_many :subordinates, :class_name => "Employee",
+    :foreign_key => "manager_id"
+  belongs_to :manager, :class_name => "Employee"
+end
+
+class Person < ActiveRecord::Base
+  belongs_to :father, :class_name => 'Person'
+  belongs_to :mother, :class_name => 'Person'
+  has_many :children_of_father, :class_name => 'Person', :foreign_key => 'father_id'
+  has_many :children_of_mother, :class_name => 'Person', :foreign_key => 'mother_id'
+  def children
+     children_of_mother + children_of_father
+  end
+end
+
+
+PERSON
+    has_many : childs,:class_name => « Person », foreign_key =>
+
+FATHER < PERSON
+
+MOTHER < PERSON
+
+TUTOR < PERSON
+
+PATIENT < PERSON
+PERSONNE_TYPE::Enfant
+Père (PERSONNE)
+Mère (PERSONNE)
+
+
+
+CONSULTATION
+  Date* (Date)
+  Interrogation (Texte)
+  Examen Clinique (Texte)
+  Conclusion (Texte)
+  Bilan (Texte)
+  Diagnostic (Texte)
+  Traitements (Texte)
+
+ANTECEDENTS
+  Personnel (Texte)
+  Familiaux (Texte)
+
+PAIEMENT
+  Espece (numerique)
+  Bon Paiement (BON)
+
+
+SOCIETE GARANTIE
+  IPM (SENELEC, SDE, BOKK, PETITE COTE, SSPT)
+  ASSURANCE ( ASCOMA, SALAMA)
+
+
+
+
+BON
+  Matricule(numérique)
+  Adherent (PERSONNE::Pere/ PERSONNE::Mere)
+  Societe (Texte)
+  Profession (Texte)
+  Beneficiaire(PERSONNE::Enfant)
+  Garantie (IPM/ASSURANCE)
+
+
