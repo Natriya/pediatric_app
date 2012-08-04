@@ -5,9 +5,6 @@ gem 'rails', '3.2.6'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
-gem 'sqlite3-ruby', :require => 'sqlite3'
-
 gem 'jquery-rails'
 
 gem 'will_paginate'
@@ -19,6 +16,8 @@ group :development do
   gem 'annotate', '~> 2.4.1.beta'  
   gem 'faker'
 
+  gem 'sqlite3'
+  gem 'sqlite3-ruby', :require => 'sqlite3'
 end
 
 group :test do
@@ -30,6 +29,9 @@ group :test do
   
   gem 'ZenTest'
   gem 'autotest-growl'
+  
+  gem 'sqlite3'
+gem 'sqlite3-ruby', :require => 'sqlite3'
 end
 
 # Gems used only for assets and not required
