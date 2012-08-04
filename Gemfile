@@ -9,6 +9,9 @@ gem 'jquery-rails'
 
 gem 'will_paginate'
 
+#gem 'sqlite3'
+#gem 'sqlite3-ruby', :require => 'sqlite3'
+gem 'activerecord-postgresql-adapter'
 
 
 group :development do
@@ -31,7 +34,7 @@ group :test do
   gem 'autotest-growl'
   
   gem 'sqlite3'
-gem 'sqlite3-ruby', :require => 'sqlite3'
+  gem 'sqlite3-ruby', :require => 'sqlite3'
 end
 
 # Gems used only for assets and not required
