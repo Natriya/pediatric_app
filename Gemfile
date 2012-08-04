@@ -10,8 +10,6 @@ gem 'sqlite3-ruby', :require => 'sqlite3'
 
 gem 'jquery-rails'
 
-gem 'ZenTest'
-gem 'autotest-growl'
 gem 'will_paginate'
 
 
@@ -29,6 +27,9 @@ group :test do
 
   gem 'spork'
   gem 'factory_girl_rails'
+  
+  gem 'ZenTest'
+  gem 'autotest-growl'
 end
 
 # Gems used only for assets and not required
