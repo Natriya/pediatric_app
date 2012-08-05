@@ -12,9 +12,14 @@ class Person < ActiveRecord::Base
   validates :name, :surname, :presence => true
   validates :sex, :inclusion => { :in => %w(M F) }
   
+  
+  
   def children
      children_of_mother + children_of_father + children_of_tutor
   end
+  
+  private
+
 
 end
 # == Schema Information
@@ -24,13 +29,14 @@ end
 #  id                :integer         not null, primary key
 #  name              :string(255)     not null
 #  surname           :string(255)     not null
-#  sex_male          :boolean         default(FALSE)
+#  sex               :string(255)     not null
 #  birthday          :date
 #  address           :text
 #  cell_phone_number :string(255)
 #  email             :string(255)
 #  father_id         :integer
 #  mother_id         :integer
+#  tutor_id          :integer
 #  created_at        :datetime        not null
 #  updated_at        :datetime        not null
 #

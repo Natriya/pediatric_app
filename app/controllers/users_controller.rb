@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   include UsersHelper
   
-  before_filter :authenticate, :except => [:show, :new, :create]
+  before_filter :authenticate, :except => [:new, :create]
   before_filter :admin_create_user, :only => [:new]
   before_filter :correct_user, :only => [:edit, :update]
   before_filter :admin_user, :only => [:index, :destroy]
@@ -73,10 +73,7 @@ class UsersController < ApplicationController
        redirect_to users_path
     end
   end
-  
-  def toggle_admin
-  end
-  
+
   private
 
     def correct_user

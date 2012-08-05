@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+
   def new
     @titre = "S'identifier"
   end

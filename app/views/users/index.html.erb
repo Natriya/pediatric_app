@@ -15,11 +15,8 @@
       <th>Supprimer</th>
   </tr>
   
-     <% @users.each do |user| %>
-       <%= render user %>
-     <% end %>
-  
-
+  <%= render :partial => "user", :collection => @users %>
+     
 </table>
 
 <%= will_paginate %> 

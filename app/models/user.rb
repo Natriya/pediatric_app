@@ -9,7 +9,6 @@ class User < ActiveRecord::Base
                        :uniqueness => { :case_sensitive => false }
                     
   validates :name, :presence => true
-#                   :length   => { :maximum => 200 }
 
   validates :email,  :format   => { :with => email_regex },  :allow_blank => true
   
@@ -17,7 +16,6 @@ class User < ActiveRecord::Base
   validates :password, :presence => true,
                        :confirmation => true,
                        :length => { :within => 6..40 }
-                    #   :if => :password_validation_required?
 
                        
   before_save :encrypt_password
@@ -65,13 +63,7 @@ class User < ActiveRecord::Base
 
     def secure_hash(string)
       Digest::SHA2.hexdigest(string)
-    end
-    
-    def password_validation_required?
-         encrypted_password.blank? || !@password.blank?
-    end
-
-  
+    end 
 end
 # == Schema Information
 #

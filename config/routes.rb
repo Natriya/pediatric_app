@@ -2,6 +2,7 @@ PediatricApp::Application.routes.draw do
 
   resources :users, :except => [:show]
   resources :sessions, :only => [:new, :create, :destroy]
+  resources :people
   
   root :to => 'pages#home'
   
