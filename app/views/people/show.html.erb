@@ -1,2 +1,40 @@
-<h1>People#show</h1>
-<p>Find me in app/views/people/show.html.erb</p>
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @person.name %>
+</p>
+
+<p>
+  <b>Surname:</b>
+  <%= @person.surname %>
+</p>
+
+<p>
+  <b>Sex:</b>
+  <%= @person.sex %>
+</p>
+
+<p>
+  <b>Birthday:</b>
+  <%= @person.birthday %>
+</p>
+
+<p>
+  <b>Address:</b>
+  <%= @person.address %>
+</p>
+
+<p>
+  <b>Cell phone number:</b>
+  <%= @person.cell_phone_number %>
+</p>
+
+<p>
+  <b>Email:</b>
+  <%= @person.email %>
+</p>
+
+
+<%= link_to 'Edit', edit_person_path(@person) %> |
+<%= link_to 'Back', people_path %>

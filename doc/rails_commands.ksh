@@ -34,3 +34,5 @@ rails generate model Address address:text phone_number:string
 rails generate controller People new create edit update destroy index show
 
 rails g scaffold Person --migration=false --skip
+rails g scaffold Person --skip name:string surname:string sex:string birthday:date address:text cell_phone_number:string  email:string
+
