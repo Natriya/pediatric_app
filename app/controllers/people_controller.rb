@@ -41,16 +41,19 @@ class PeopleController < ApplicationController
   # POST /people.json
   def create
     @person = Person.new(params[:person])
+    @person.next_step
+    
+    render "new"
 
-    respond_to do |format|
-      if @person.save
-        format.html { redirect_to @person, notice: 'Person was successfully created.' }
-        format.json { render json: @person, status: :created, location: @person }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @person.errors, status: :unprocessable_entity }
-      end
-    end
+    #respond_to do |format|
+      #if @person.save
+        #format.html { redirect_to @person, notice: 'Person was successfully created.' }
+        #format.json { render json: @person, status: :created, location: @person }
+      #else
+        #format.html { render action: "new" }
+        #format.json { render json: @person.errors, status: :unprocessable_entity }
+      #end
+    #end
   end
 
   # PUT /people/1

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120804105031) do
+ActiveRecord::Schema.define(:version => 20120806143621) do
 
   create_table "addresses", :force => true do |t|
     t.text     "address",      :null => false
@@ -20,19 +20,33 @@ ActiveRecord::Schema.define(:version => 20120804105031) do
     t.datetime "updated_at",   :null => false
   end
 
-  create_table "people", :force => true do |t|
-    t.string   "name",              :null => false
-    t.string   "surname",           :null => false
-    t.string   "sex",               :null => false
+  create_table "patients", :force => true do |t|
+    t.string   "name",                  :null => false
+    t.string   "surname",               :null => false
+    t.string   "sex",                   :null => false
     t.date     "birthday"
-    t.text     "address"
+    t.date     "next_appointment_date"
+    t.integer  "mother_id"
+    t.integer  "father_id"
+    t.integer  "tutor_id"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
+
+  create_table "people", :force => true do |t|
+    t.string   "name",                          :null => false
+    t.string   "surname",                       :null => false
+    t.string   "sex",                           :null => false
+    t.date     "birthday"
     t.string   "cell_phone_number"
     t.string   "email"
-    t.integer  "father_id"
-    t.integer  "mother_id"
-    t.integer  "tutor_id"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
+    t.string   "type"
+    t.integer  "address_id"
+    t.integer  "company_id"
+    t.integer  "company_person_identification"
+    t.string   "occupation"
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
   create_table "users", :force => true do |t|

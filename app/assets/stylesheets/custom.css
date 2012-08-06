@@ -1,16 +1,20 @@
-
 .container {
-    width: 710px;
+    width: 850px;
 }
 
-body {
-  background: #cff;
+ 
+.content {
+  width: 710px;
+  border: 1px solid #000000;
+  padding: 1em 1%;
+  border: 1px solid #000000;
+  margin-left: 120px;
+   
 }
 
+body { background: #cff; }
 
-header {
-  padding-top: 20px;
-}
+header { padding-top: 20px; }
 
 header img {
   padding: 1em;
@@ -24,9 +28,7 @@ section {
   background: #fff;
 }
 
-section h1 {
-  font-size: 200%;
-}
+section h1 { font-size: 200%; }
 
 /* Liens */
 
@@ -40,20 +42,15 @@ a:hover {
   text-decoration: underline;
 }
 
-a:visited {
-  color: #069;
-}
+a:visited { color: #069; }
 
 /* Navigation */
-
-nav {
-  // float: right;
-}
 
 nav {
   background-color: white;
   padding: 0 0.7em;
   white-space: nowrap;
+  margin-left: 120px;
 }
 
 
@@ -111,9 +108,7 @@ footer {
   margin-right: auto;
 }
 
-footer nav {
-  float: none;
-}
+footer nav { float: none; }
 
 /* User show page */
 

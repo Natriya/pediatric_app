@@ -1,5 +1,11 @@
 <h1>Nouveau Patient</h1>
 
-<%= render 'form' %>
-
-<%= link_to 'Back', people_path %>
+<%= form_for(@person) do |f| %>
+   <%= f.error_messages %>
+   
+   <%= render "form_#{@person.current_step}", :f => f  %>
+   
+   <div class="actions">
+      <%= f.submit "Créer" %>
+   </div>
+<% end %>

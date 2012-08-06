@@ -1,22 +1,4 @@
 <header>
-  <nav class="round">
-    <ul>
-          <li><%= link_to "Accueil", root_path %></li>
-      <% if signed_in? %>
-         <% if current_user.admin? %> 
-          <li><%= link_to "Utilisateurs", users_path %></li>
-         <% end %> 
-          <li><%= link_to "Réglages", edit_user_path(current_user) %></li>
-          <li><%= link_to "Deconnection", signout_path, :method => :delete %></li>
-         <% if current_user.admin? %> 
-          <li>Administrateur</li>
-         <% else %>
-          <li>Utilisateur</li>
-         <% end %>    
-      <% else %>
-           <li><%= link_to "S'identifier", signin_path %></li>
-      <% end %>
-    </ul>
-  </nav>  
-
+    <%= render'layouts/horizontal_header' %>
+    <%= render'layouts/vertical_header' %>
 </header>

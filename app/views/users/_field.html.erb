@@ -1,32 +1,31 @@
 
 <!--
-# Table name: people
+# Table name: users
 #
-#  id                :integer         not null, primary key
-#  name              :string(255)     not null
-#  surname           :string(255)     not null
-#  sex               :string(255)     not null
-#  birthday          :date
-#  address           :text
-#  cell_phone_number :string(255)
-#  email             :string(255)
-#  father_id         :integer
-#  mother_id         :integer
-#  tutor_id          :integer
-#  created_at        :datetime        not null
-#  updated_at        :datetime        not null
+#  id                 :integer         not null, primary key
+#  username           :string(255)
+#  name               :string(255)     not null
+#  address            :text
+#  phone_number       :string(255)
+#  email              :string(255)
+#  other              :text
+#  admin              :boolean         default(FALSE)
+#  encrypted_password :string(255)
+#  salt               :string(255)
+#  created_at         :datetime        not null
+#  updated_at         :datetime        not null
 -->
 
 <!-- <= render 'shared/error_messages', :object => f.object %> -->
 
 <%= f.error_messages %>
 <div class="field">
-   <%= f.label :username, "Nom*" %> <br />
-   <%= f.text_field :name %>
+   <%= f.label :username, "Pseudonyme*" %> <br />
+   <%= f.text_field :username %>
 </div>
 <div class="field">
-   <%= f.label :name, "Prénom*" %> <br />
-   <%= f.text_field :surname %>
+   <%= f.label :name, "Nom*" %> <br />
+   <%= f.text_field :name %>
 </div>
 <div class="field">
    <%= f.label :address, "Adresse" %> <br />

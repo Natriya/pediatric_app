@@ -1,6 +1,9 @@
 <h1>Editing person</h1>
 
-<%= render 'form' %>
-
-<%= link_to 'Show', @person %> |
-<%= link_to 'Back', people_path %>
+<%= form_for(@person) do |f| %>
+   <%= render 'form', :f => f  %>
+   
+   <div class="actions">
+      <%= f.submit "Mettre à jour" %>
+   </div>
+<% end %>

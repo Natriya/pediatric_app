@@ -1,88 +1,175 @@
+Pour Information :
+ string = chaine de caractère
+ integer = entier numérique
+ * = champ obligatoire
+ xx_id = identification de l'objet xx  (Ce n'est pas important pour la compréhension de l'ensemble)
+ --virtual = champ virtuel (nom présent dans la base de données. 
+             Ce n'est pas important pour la compréhension de l'ensemble)
+ --not_accessible = champ non visible pour l'utilisateur. Des champs utiles pour la gestion de l'application
+                    (Ce n'est pas important pour la compréhension de l'ensemble)
 
 
-Last Update : 04 august 2012 / 12:30
+Last Update : 06 august 2012
 
-USER
-  ID
-  Username
-  Name
-  Address
-  Phone
-  eMail
-  Other
+==============================
+==== Authentification
+==============================
 
-  admin
-  Encrypted_Password
-  salt
+==============================
 
+User -- Users
+  username* : string
+  name* : string
+  address : text
+  phone_number : string
+  email : string
+  other : string
+  
+ --virtual
+  password (+password_validation) : password_field
 
-Médical
+ --not_accessible
+  admin : boolean
+  encrypted_password : string
+  salt : string
 
+==============================
 
-ADDRESS
-   Address(Texte)
-   Phone (9 caractères)
+==============================
+==== Medical
+==============================
+
+==============================
+-- Représentation des parents (les parents sont des personnes : People). 
+-- L'enfant est représenté par le patient décrit plus bas
+People -- Person
+  name *  : string
+  surname  *  : string
+  sex *  : string (M|F)
+  birthday : date
+  cell_phone_number : string
+  email : string
+
+  type : string  -- #Type# * (Father|Mother|Tutor)
+
+  belongs_to :Address -- address_id
+  
+  -- paramètres si la personne appartient à une entreprise
+  belongs_to :Company -- company_id
+  company_person_identification :integer (validate:positive)
+  occupation : string
+
+==============================
+-- L'adresse des parents est représenté séparemment
+-- En effet, pour éviter la duplication, je représente l'adresse séparemment
+-- Ensuite j'indique qui y habite
+-- Je ne représente l'adresse que pour les parents et non pour l'enfant.
+Addresses -- Address
+   address* : text
+   phone_number : string
    
-   HAS_MANY::PERSON
+   has_many :people
 
-PERSON
-  Name * (50 caractères)
-  Surname  * (50 caractères)
-  Sex * (M/F)
-  #Type# * (Pere/Mere/Tuteur/Enfant)
-  Birthday  (Date)
-  Cell_phone (9 caractères)
-  email
+==============================
 
-  BELONGS_TO::ADDRESS
-  HAS_MANY::CONSULTATION
-  HAS_ONE::ANTECEDENT
+-- Le parent (Mother ou Father ou Tutor) est une personne.
+-- Ce qui est modélisé par "Mother < Person"
 
+-- Chaque parent a 1 ou plusieurs enfants (patient)
+-- Ce qui se modélise par "has_many :patients"
 
-CONSULTATION
-  Date* (Date)
-  Interrogation (Texte)
-  Clinic_Exam (Texte)
-  Conclusion (Texte)
-  Bilan (Texte)
-  Diagnostic (Texte)
-  Traitements (Texte)
+Mother < Person
+   has_many :patients
+
+Father < Person
+   has_many :patients
+   
+Tutor < Person
+   has_many :patients
+
+==============================
+-- Représentation de l'enfant
+Patients -- Patient
+  name*  : string
+  surname*  : string
+  sex*  : string (M|F)
+  birthday : date
+  next_appointment_date : date
   
-  BELONGS_TO::PERSON
-  HAS_ONE::PAYMENT
+  -- Validate at leat one parent
+  belongs_to :Mother -- mother_id 
+  belongs_to :Father -- father_id
+  belongs_to :Tutor -- tutor_id
+ 
+  has_one :MedicalHistory
+  has_many :Appointments
 
-ANTECEDENT
-  Personnel (Texte)
-  Familiaux (Texte)
+==============================
+-- Représentation des consultation
+Appointment -- Appointments
+  date* : date
+  interview (interrogation) : text
+  clinical_exam (examen clinique) : text
+  results (Conclusion) : text
+  health_check (Bilan) : text
+  diagnostic (diagnostic) : text
+  treatment (Traitements)  : text
   
-  BELONGS_TO::PERSON
+  -- Les consultations sont pour les patients
+  belongs_to :Patient -- patient_id
+  -- Chaque consultation se solde par un règlement
+  has_one :Payment
+
+==============================
+-- Antécédent Médical du patient
+MedicalHistories -- MedicalHistory
+  Personal : text
+  Family : text
   
-
-PAYMENT
-  Espece (numerique)
-  Bon Paiement (BON)
+  belongs_to :Patient*  -- patient_id
   
-  BELONG_TO::CONSULTATION
-  HAS_ONE::BON
+==============================
 
 
-SOCIETE GARANTIE
-  Name
-  Type (IPM|ASSURANCE)
+==============================
+==== Billing
+==============================
 
-DATA
-  IPM (SENELEC, SDE, BOKK, PETITE COTE, SSPT)
-  ASSURANCE ( ASCOMA, SALAMA)
+==============================
 
+Payment -- Payments
+  payment_type :string* (cash|check|credit_card|voucher)
+  value : integer* (validate:positive)
+  has_one :Voucher (--Bon)
+  
+  belongs_to :Appointment --appointment_id
 
+==============================
 
+-- Bon de paiement
+Voucher -- Vouchers
+  belongs_to :InsuranceCompany --insurance_company_id*
+  belongs_to :Person (adherent)  --person_id* (validates: parent_of_patient)
 
-BON
-  Matricule(numérique)
-  BELONGS_TO:: PERSON #Adherent (PERSONNE::Pere/ PERSONNE::Mere)
-  Societe (Texte)
-  Profession (Texte)
-  Garantie (IPM/ASSURANCE)
+==============================
 
-  BELONG_TO::SOCIETE_GARANTIE
+-- Entreprise de l'adhérent
+Company -- Companies
+  name*
+  address : text
+  phone_number : string
+  
+    DATA
+        IPM (SENELEC, SDE, BOKK, PETITE COTE, SSPT)
+        
+==============================
+
+-- Compagnie d'assurance
+InsuranceCompany -- InsuranceCompanies
+  name*
+  address : text
+  phone_number : string
+  
+    DATA
+        ASSURANCE (ASCOMA, SALAMA)
 
