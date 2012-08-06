@@ -3,7 +3,7 @@ class CreatePeople < ActiveRecord::Migration
     create_table :people do |t|
       t.string :name, :null => false
       t.string :surname, :null => false
-      t.string :sex, :null => false
+      t.string :gender, :null => false
       t.date :birthday
       t.string :cell_phone_number
       t.string :email

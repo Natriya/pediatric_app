@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(:version => 20120806143621) do
   create_table "patients", :force => true do |t|
     t.string   "name",                  :null => false
     t.string   "surname",               :null => false
-    t.string   "sex",                   :null => false
+    t.string   "gender",                :null => false
     t.date     "birthday"
     t.date     "next_appointment_date"
     t.integer  "mother_id"
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(:version => 20120806143621) do
   create_table "people", :force => true do |t|
     t.string   "name",                          :null => false
     t.string   "surname",                       :null => false
-    t.string   "sex",                           :null => false
+    t.string   "gender",                        :null => false
     t.date     "birthday"
     t.string   "cell_phone_number"
     t.string   "email"

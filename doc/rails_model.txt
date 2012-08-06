@@ -42,6 +42,9 @@ User -- Users
 ==============================
 -- Représentation des parents (les parents sont des personnes : People). 
 -- L'enfant est représenté par le patient décrit plus bas
+
+-- Chaque parent a 1 ou plusieurs enfants (patient)
+-- Ce qui se modélise par "has_many :patients"
 People -- Person
   name*  : string
   surname*  : string
@@ -53,6 +56,8 @@ People -- Person
   type : string  -- #Type# * (Father|Mother|Tutor)
 
   belongs_to :address -- address_id
+  
+  has_many :patients
   
   -- paramètres si la personne appartient à une entreprise
   belongs_to :company -- company_id
@@ -75,17 +80,13 @@ Addresses -- Address
 -- Le parent (Mother ou Father ou Tutor) est une personne.
 -- Ce qui est modélisé par "Mother < Person"
 
--- Chaque parent a 1 ou plusieurs enfants (patient)
--- Ce qui se modélise par "has_many :patients"
 
 Mother < Person
-   has_many :patients
 
 Father < Person
-   has_many :patients
    
 Tutor < Person
-   has_many :patients
+
 
 ==============================
 -- Représentation de l'enfant
