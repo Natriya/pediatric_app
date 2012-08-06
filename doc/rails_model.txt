@@ -43,21 +43,21 @@ User -- Users
 -- Représentation des parents (les parents sont des personnes : People). 
 -- L'enfant est représenté par le patient décrit plus bas
 People -- Person
-  name *  : string
-  surname  *  : string
-  sex *  : string (M|F)
+  name*  : string
+  surname*  : string
+  sex*  : string (M|F)
   birthday : date
   cell_phone_number : string
   email : string
 
   type : string  -- #Type# * (Father|Mother|Tutor)
 
-  belongs_to :Address -- address_id
+  belongs_to :address -- address_id
   
   -- paramètres si la personne appartient à une entreprise
-  belongs_to :Company -- company_id
+  belongs_to :company -- company_id
   company_person_identification :integer (validate:positive)
-  occupation : string
+  occupation :string
 
 ==============================
 -- L'adresse des parents est représenté séparemment
@@ -97,12 +97,12 @@ Patients -- Patient
   next_appointment_date : date
   
   -- Validate at leat one parent
-  belongs_to :Mother -- mother_id 
-  belongs_to :Father -- father_id
-  belongs_to :Tutor -- tutor_id
+  belongs_to :mother -- mother_id 
+  belongs_to :father -- father_id
+  belongs_to :tutor -- tutor_id
  
-  has_one :MedicalHistory
-  has_many :Appointments
+  has_one :medical_history
+  has_many :appointments
 
 ==============================
 -- Représentation des consultation
@@ -116,9 +116,9 @@ Appointment -- Appointments
   treatment (Traitements)  : text
   
   -- Les consultations sont pour les patients
-  belongs_to :Patient -- patient_id
+  belongs_to :patient -- patient_id
   -- Chaque consultation se solde par un règlement
-  has_one :Payment
+  has_one :payment
 
 ==============================
 -- Antécédent Médical du patient
@@ -126,7 +126,7 @@ MedicalHistories -- MedicalHistory
   Personal : text
   Family : text
   
-  belongs_to :Patient*  -- patient_id
+  belongs_to :patient*  -- patient_id
   
 ==============================
 
@@ -140,16 +140,16 @@ MedicalHistories -- MedicalHistory
 Payment -- Payments
   payment_type :string* (cash|check|credit_card|voucher)
   value : integer* (validate:positive)
-  has_one :Voucher (--Bon)
+  has_one :voucher (--Bon)
   
-  belongs_to :Appointment --appointment_id
+  belongs_to :appointment --appointment_id
 
 ==============================
 
 -- Bon de paiement
 Voucher -- Vouchers
-  belongs_to :InsuranceCompany --insurance_company_id*
-  belongs_to :Person (adherent)  --person_id* (validates: parent_of_patient)
+  belongs_to :insurance_company* --insurance_company_id
+  belongs_to :person* (adherent)  --person_id* (validates: parent_of_patient)
 
 ==============================
 

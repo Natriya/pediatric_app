@@ -1,27 +1,21 @@
 class Person < ActiveRecord::Base
-  attr_accessible :address_id, :birthday, :cell_phone_number, :email, :name, :sex, :surname
+  attr_accessible :address_id, :birthday, :cell_phone_number, :email, :name, 
+                  :sex, :surname, :company_person_identification, :occupation
   attr_writer :current_step
 
-  belongs_to :father, :class_name => 'Person'
-  belongs_to :mother, :class_name => 'Person'
-  belongs_to :tutor, :class_name => 'Person'
-  has_many :children_of_father, :class_name => 'Person', :foreign_key => 'father_id'
-  has_many :children_of_mother, :class_name => 'Person', :foreign_key => 'mother_id'
-  has_many :children_of_tutor, :class_name => 'Person', :foreign_key => 'tutor_id'
-  
   belongs_to :address
+  
+  # parameters if person belongs to a company
+  belongs_to :company
   
   
   validates :name, :surname, :presence => true
   validates :sex, :inclusion => { :in => %w(M F) }
+  validates :company_person_identification, :numericality => {:only_integer => true, :greater_than => 0 }
   
-  
-  
-  def children
-     children_of_mother + children_of_father + children_of_tutor
-  end
-  
-  
+  has_many :patients
+
+   
   #### Steps Wizard Control Machine
   
     def current_step
