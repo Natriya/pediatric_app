@@ -45,3 +45,12 @@ rails generate migration AddAddressIdToPeople address_id:integer
 
 rails g scaffold Patient  name:string surname:string sex:string birthday:date next_appointment_date:date mother_id:integer father_id:integer tutor_id:integer 
 
+ f = Father.new(:name=>"f",:surname=>"f",:gender=>"M")
+ f = Father.new(:name=>"f",:surname=>"f")
+ p2 = Patient.new(:name=>"p2",:surname=>"p2",:gender=>"M")
+ p = Patient.first
+ 
+ params = { :member => { :name => 'Jack', :surname => 'smilJack', :gender => 'M', :father_attributes => { :name => 'smiling', :surname => 'smil', :gender => 'M' } } }
+ p3 = Patient.new(params[:member])
+
+

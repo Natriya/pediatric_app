@@ -1,0 +1,37 @@
+<% if signed_in? %>
+
+  <div id="navigation">
+     <ul class="top-level">
+        
+        <!-- Administration -->
+        <li><%= link_to "Administration", "#" %>      
+           <ul class="sub-level">
+            
+             <% if current_user.admin? %> 
+              <li><%= link_to "Utilisateurs", users_path %></li>
+             <% end %> 
+             
+              <li><%= link_to "Réglages", edit_user_path(current_user) %></li>
+           </ul>   
+        </li>  
+        
+        <!-- Patient -->
+        <li><%= link_to "Patient", "#" %>      
+           <ul class="sub-level">
+              <li><%= link_to "Nouveau", new_patient_path %></li>
+              <li><%= link_to "Liste", patients_path %></li>
+           </ul>   
+        </li>  
+
+        <!-- Consultation -->
+        <li><%= link_to "Consultation", "#" %>      
+           <ul class="sub-level">
+              <li><%= link_to "Nouvelle", "#" %></li>
+              <li><%= link_to "Liste", "#" %></li>
+           </ul>   
+        </li>              
+        
+     </ul>         
+  </div>
+      
+<% end %>

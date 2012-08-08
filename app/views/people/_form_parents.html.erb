@@ -1,0 +1,28 @@
+
+  <h2>Parent</h2>
+  <div class="field">
+    <%= f.label :name, "Nom*" %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :surname, "Prénom*" %><br />
+    <%= f.text_field :surname %>
+  </div>
+  <div class="field">
+    <%= f.label :sex, "Sex*" %><br />
+    <%= f.select :sex, ["M","F"], :include_blank => true %>
+  </div>
+  <div class="field">
+    <%= f.label :birthday, "Date de Naissance" %><br />
+    <%= f.date_select :birthday, :order => [:day, :month, :year], :start_year => 1990, :use_month_numbers => true, :include_blank => true %>
+  </div>
+  
+    <div class="field">
+       <%= f.label :cell_phone_number, "Téléphone Portable" %> <br />
+       <%= f.telephone_field :cell_phone_number %>
+    </div>
+    <div class="field">
+       <%= f.label :email, "E-Mail" %> <br />
+       <%= f.text_field :email %>
+    </div> 
+

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class UsersController < ApplicationController
 
 
@@ -38,7 +40,7 @@ class UsersController < ApplicationController
                flash[:success] = "Bienvenue dans l'Application Pediatrie!"
                redirect_to root_path
             else
-                flash[:success] = "Nouvel Utilisateur cree avec succes!"
+                flash[:success] = "Nouvel Utilisateur créé avec succes!"
                 redirect_to users_path
              end
         else
@@ -65,11 +67,11 @@ class UsersController < ApplicationController
   def destroy
     user_to_destroy = User.find(params[:id])
     if current_user?(user_to_destroy)
-       flash[:error] = "Echec : Vous ne pouvez pas vous supprimer vous meme"
+       flash[:error] = "Echec : Vous ne pouvez pas vous supprimer vous même"
        redirect_to users_path
     else
        user_to_destroy.destroy
-       flash[:success] = "Utilistaeur supprime."
+       flash[:success] = "Utilisateur supprimé"
        redirect_to users_path
     end
   end

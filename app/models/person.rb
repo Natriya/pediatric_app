@@ -1,6 +1,7 @@
 class Person < ActiveRecord::Base
   attr_accessible :address_id, :birthday, :cell_phone_number, :email, :name, 
-                  :gender, :surname, :company_person_identification, :occupation
+                  :gender, :surname, :company_person_identification, 
+                  :occupation
   attr_writer :current_step
 
   belongs_to :address
@@ -10,10 +11,15 @@ class Person < ActiveRecord::Base
   # parameters if person belongs to a company
   belongs_to :company
   
+
   
+  #validates_associated :patients
+
   validates :name, :surname, :presence => true
   validates :gender, :inclusion => { :in => %w(M F) }
-  validates :company_person_identification, :numericality => {:only_integer => true, :greater_than => 0 }
+  validates :company_person_identification, :numericality => {:only_integer => true, :greater_than => 0 } , 
+                                            :allow_nil => true
+   
   
    
   #### Steps Wizard Control Machine

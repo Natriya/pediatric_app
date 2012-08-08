@@ -1,0 +1,59 @@
+#navigation {
+    width: 100px;
+    float : left;
+    margin-top: 20px;
+}
+#navigation ul {
+    margin: 0px;
+    padding: 0px;
+}
+ul.top-level { background: #666; }
+
+#navigation li { list-style: none; }
+
+ul.top-level li {
+    border-bottom: #fff solid;
+    border-top: #fff solid;
+    border-width: 1px;
+}
+#navigation a {
+    color: #fff;
+    cursor: pointer;
+    display:block;
+    height:25px;
+    line-height: 25px;
+    text-indent: 10px;                  
+    text-decoration:none;
+    width:100%;
+}
+#navigation a:hover { text-decoration:underline; }
+
+#navigation li:hover {
+   background: #f90;
+   position: relative;
+}
+
+ul.sub-level { display: none; }
+
+li:hover .sub-level {
+    background: #999;
+    border: #fff solid;
+    border-width: 1px;
+    display: block;
+    position: absolute;
+    left: 75px;
+    top: 5px;
+}
+
+ul.sub-level li {
+    border: none;
+    float:left;
+    width:150px; 
+}
+
+#navigation .sub-level { background: #999; }
+#navigation .sub-level .sub-level { background: #09C; }
+                
+/*IE RESET HELPER*/
+li:hover .sub-level .sub-level { display:none; }
+.sub-level li:hover .sub-level { display:block; }   

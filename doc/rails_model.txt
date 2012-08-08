@@ -94,6 +94,7 @@ Patients -- Patient
   name*  : string
   surname*  : string
   sex*  : string (M|F)
+  rang de l'enfant (par rapport à la mère) : integer (value positive) 
   birthday : date
   next_appointment_date : date
   
@@ -109,10 +110,10 @@ Patients -- Patient
 -- Représentation des consultation
 Appointment -- Appointments
   date* : date
-  interview (interrogation) : text
+  interview (interrogatoire) : text
   clinical_exam (examen clinique) : text
-  results (Conclusion) : text
-  health_check (Bilan) : text
+  results (Conclusion) : text -- Conclusion de l'examen clinique
+  health_check (Bilan) : text -- Analyse complémentaire à la conclusion (sous-conclusion) (examen para-clinique)
   diagnostic (diagnostic) : text
   treatment (Traitements)  : text
   
@@ -156,21 +157,37 @@ Voucher -- Vouchers
 
 -- Entreprise de l'adhérent
 Company -- Companies
-  name*
+  name* : string
   address : text
   phone_number : string
   
     DATA
-        IPM (SENELEC, SDE, BOKK, PETITE COTE, SSPT)
+        SENELEC, SDE, Sonatel
+        
         
 ==============================
 
 -- Compagnie d'assurance
 InsuranceCompany -- InsuranceCompanies
-  name*
+  name* : string
+  Interlocuteur : string
   address : text
   phone_number : string
   
     DATA
+        IPM (SENELEC, SDE, BOKK, Inter Entreprise de la Petite Cote, SSPT : Société Sénégalaise des Phosphate de Thies, SONATEL)
         ASSURANCE (ASCOMA, SALAMA)
+
+==============================
+Info complémentaire        
+IPM = Instutition de Prévoyance Maladie (chèque ou espèce)
+Assurance : payment par chèque (rarement par espèce)
+
+EDF adhère à une assurance (pourcentage de facturation) pour couvrir les cadres d'EDF.
+  -- ex : Pour Assurance, facturation de 80% et réclamation des 20% au client directement
+  -- IPM facturation de 100% toujours.
+
+
+Si Parent a matricule ==> enfant peut avoir matricule
+Une consultation a plusieurs type de payment
 

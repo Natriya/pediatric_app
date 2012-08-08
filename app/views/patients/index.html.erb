@@ -1,0 +1,38 @@
+<h1>Listing patients</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Surname</th>
+    <th>Gender</th>
+    <th>Birthday</th>
+    <th>Next appointment date</th>
+    <th>Mother</th>
+    <th>Father</th>
+    <th>Tutor</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @patients.each do |patient| %>
+  <tr>
+    <td><%= patient.name %></td>
+    <td><%= patient.surname %></td>
+    <td><%= patient.gender %></td>
+    <td><%= patient.birthday %></td>
+    <td><%= patient.next_appointment_date %></td>
+    <td><%= patient.mother_id %></td>
+    <td><%= patient.father_id %></td>
+    <td><%= patient.tutor_id %></td>
+    <td><%= link_to 'Show', patient %></td>
+    <td><%= link_to 'Edit', edit_patient_path(patient) %></td>
+    <td><%= link_to 'supprimer', patient, :method => :delete, :confirm => "Etes-vous certain?", :title => "Supprimer #{patient.name}" %></td>
+    
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Patient', new_patient_path %>
