@@ -9,7 +9,7 @@
         <%= f.text_field :surname %>
     </div>
      
-<% if @render_gender %> 
+<% if session[:render_tutor] %> 
     <div class="field">
         <%= f.label :gender, "Sexe*" %> <br />
         <%= f.select :gender, ["M","F"], :include_blank => true %> 
@@ -29,4 +29,9 @@
         <%= f.label :email, "E-Mail" %> <br />
         <%= f.text_field :email %>
     </div>
-
+    
+    
+   <div class="actions">
+	    <%= f.submit "Précédent", :name => "back_button" %>
+	    <%= f.submit "Suivant", :name => "next_button" %>
+   </div>

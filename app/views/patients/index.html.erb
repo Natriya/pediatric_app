@@ -1,15 +1,71 @@
-<h1>Listing patients</h1>
+<h1>Rechercher Patients</h1>
 
+<%= search_form_for @search do |f| %>
+    <div class="field">
+        <%= f.label :name_cont, "Nom" %>
+        <%= f.text_field :name_cont , :size => 15%> 
+        
+        <%= f.label :name_cont, "Prénom" %>
+        <%= f.text_field :surname_cont, :size => 15 %>
+        
+        <br />  
+        
+        <%= f.label :birthday %>
+        <%= f.date_select :birthday_cont, :order => [:day, :month, :year], :start_year => 1990, :include_blank => true %>
+        
+        <%= f.label :gender, "Sexe" %>
+        <%= f.select :gender_matches, ["M","F"], :include_blank => true %>   
+        
+        <br />    
+        
+        <%= f.label :next_appointment_date, "Prochaine RDV" %>
+        <%= f.date_select :next_appointment_date_cont, :include_blank => true%> <br />
+        
+        <br /> 
+        
+        <%= f.label :mother_name_cont, "Nom Mère" %>
+        <%= f.text_field :mother_name_cont , :size => 15%> 
+        
+        <%= f.label :mother_surname_cont, "Prénom Mère" %>
+        <%= f.text_field :mother_surname_cont , :size => 15%> 
+        
+        <br /> 
+        
+        <%= f.label :father_name_cont, "Nom Père" %>
+        <%= f.text_field :father_name_cont , :size => 15%> 
+        
+        <%= f.label :father_surname_cont, "Prénom Père" %>
+        <%= f.text_field :father_surname_cont , :size => 15%> 
+        
+        
+        <br /> 
+        
+        <%= f.label :tutor_name_cont, "Nom Tuteur" %>
+        <%= f.text_field :tutor_name_cont , :size => 15%> 
+        
+        <%= f.label :tutor_surname_cont, "Prénom Tuteur" %>
+        <%= f.text_field :tutor_surname_cont , :size => 15%> 
+   
+    </div>
+    <div class="action">
+      <%= f.submit "Chercher" %>  <%= link_to "Tous", patients_path, :class => "button-link" %>
+    </div>
+<% end %>
+
+
+
+<br />
+<h1>Liste des Patients</h1>
+
+<%= will_paginate %>
 <table>
   <tr>
-    <th>Name</th>
-    <th>Surname</th>
-    <th>Gender</th>
-    <th>Birthday</th>
-    <th>Next appointment date</th>
-    <th>Mother</th>
-    <th>Father</th>
-    <th>Tutor</th>
+    <th><%= sort_link @search, :name, "Nom" %></th>
+    <th><%= sort_link @search, :surname, "Prénom" %></th>
+    <th><%= sort_link @search, :gender, "Sexe" %></th>
+    <th><%= sort_link @search, :birthday, "Naissance" %></th>
+    
+    <th><%= sort_link @search, :next_appointment_date, "Prochaine Consultation" %></th>
     <th></th>
     <th></th>
     <th></th>
@@ -21,18 +77,28 @@
     <td><%= patient.surname %></td>
     <td><%= patient.gender %></td>
     <td><%= patient.birthday %></td>
-    <td><%= patient.next_appointment_date %></td>
-    <td><%= patient.mother_id %></td>
-    <td><%= patient.father_id %></td>
-    <td><%= patient.tutor_id %></td>
-    <td><%= link_to 'Show', patient %></td>
-    <td><%= link_to 'Edit', edit_patient_path(patient) %></td>
-    <td><%= link_to 'supprimer', patient, :method => :delete, :confirm => "Etes-vous certain?", :title => "Supprimer #{patient.name}" %></td>
     
+    
+    <td><%= patient.next_appointment_date %></td>
+
+    <td><%= link_to 'Afficher', patient %></td>
+    <td><%= link_to 'Modifier', edit_patient_path(patient) %></td>
+    <td><%= link_to 'Supprimer', patient, :method => :delete, :confirm => "Etes-vous certain?", :title => "Supprimer #{patient.full_name}" %></td>
+    
+  </tr>
+  
+  <tr>
+      <td colspan="11">
+          Mère : <%= patient.mother_fullname %> <br />
+          Père : <%= patient.father_fullname %> <br />
+          Tuteur : <%= patient.tutor_fullname %> <br />
+      </td>
   </tr>
 <% end %>
 </table>
 
+<%= will_paginate %>
+
 <br />
 
-<%= link_to 'New Patient', new_patient_path %>
+<%= link_to 'Nouveau Patient', new_patient_path %>

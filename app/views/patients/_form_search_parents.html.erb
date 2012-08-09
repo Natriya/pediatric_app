@@ -1,0 +1,74 @@
+
+
+<%= search_form_for @search, :url => patients_path, :method => "post" do |f| %>
+    <div class="field">
+        <%= f.label :name_cont, "Nom" %>
+        <%= f.text_field :name_cont , :size => 15%> 
+        
+        <%= f.label :surname_cont, "Prénom" %>
+        <%= f.text_field :surname_cont, :size => 15 %>
+        
+        <br />  
+        
+        <%= f.label :birthday %>
+        <%= f.date_select :birthday_cont, :order => [:day, :month, :year], :start_year => 1900, :include_blank => true %>
+        
+        <%= f.label :gender, "Sexe" %>
+        <%= f.select :gender_matches, ["M","F"], :include_blank => true %>   
+        
+        <br /> 
+        
+        <%= f.label :cell_phone_number_cont, "Téléphone Portable" %> 
+        <%= f.telephone_field :cell_phone_number_cont, :size => 15 %>
+       
+        <br />
+       
+        <%= f.label :email_cont, "E-Mail" %> 
+        <%= f.text_field :email_cont %>
+        
+   
+    </div>
+    <div class="action">
+      <%= f.submit "Chercher", :name => "search_parents_button" %>
+    </div>
+<% end %>
+
+
+
+<br />
+<h1>Liste</h1>
+
+<%= will_paginate @parents_search %>
+
+<%= form_tag :url => patients_path do |f| %>
+
+<table>
+  <tr>
+	<th>Sélection</th>
+    <th><%= sort_link @search, :name, "Nom" %></th>
+    <th><%= sort_link @search, :surname, "Prénom" %></th>
+    <th><%= sort_link @search, :gender, "Sexe" %></th>
+    <th><%= sort_link @search, :birthday, "Naissance" %></th>
+  </tr>
+
+<% @parents_search.each do |parent| %>
+  <tr>
+	<td><%= radio_button_tag :parent_selected, "#{parent.id}"  %></td>
+	 
+    <td><%= parent.name %></td>
+    <td><%= parent.surname %></td>
+    <td><%= parent.gender %></td>
+    <td><%= parent.birthday %></td>    
+  </tr>
+<% end %>
+</table>
+
+<%= submit_tag "Choisir", :name => "select_parent_button" %>
+<% end %>
+
+
+<%= will_paginate  @parents_search %>
+
+<br />
+
+<%= link_to 'Nouveau Patient', new_patient_path %>

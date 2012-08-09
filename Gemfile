@@ -7,8 +7,9 @@ gem 'rails', '3.2.6'
 
 gem 'jquery-rails'
 
+gem 'ransack'
 gem 'will_paginate'
-gem "dynamic_form"
+gem 'dynamic_form'
 gem 'debugger'
 
 gem 'sqlite3'
@@ -21,9 +22,6 @@ group :development do
   gem 'rspec-rails'
   gem 'annotate', '~> 2.4.1.beta'  
   gem 'faker'
-
-  gem 'sqlite3'
-  gem 'sqlite3-ruby', :require => 'sqlite3'
 end
 
 group :test do
@@ -35,9 +33,6 @@ group :test do
   
   gem 'ZenTest'
   gem 'autotest-growl'
-  
-  gem 'sqlite3'
-  gem 'sqlite3-ruby', :require => 'sqlite3'
 end
 
 # Gems used only for assets and not required

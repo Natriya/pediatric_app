@@ -1,0 +1,40 @@
+<h1>Nouveau Patient</h1>
+
+<%= form_for(@patient) do |f| %>
+   <%= f.error_messages %>
+   
+   <%= render "form_child", :f => f  %>
+   
+
+    <% if session[:mother_render]  %>   
+       <%= f.fields_for :mother do |builder| %>
+          <h2>Mère</h2>
+          <% @render_gender=false %>
+          <%= render "form_parents", :f => builder  %>
+       <% end %>
+
+    <% end %>  
+
+    <% if session[:father_render] %>      
+       <%= f.fields_for :father do |builder| %>
+          <h2>Père</h2>
+          <% @render_gender=false %>
+          <%= render "form_parents", :f => builder  %>
+       <% end %>
+    <% end %>
+    
+    <% if session[:tutor_render] %>      
+       <%= f.fields_for :tutor do |builder| %>
+          <h2>Tuteur</h2>
+          <% @render_gender=true %>
+          <%= render "form_parents", :f => builder  %>
+       <% end %>
+    <% end %>
+   
+   <div class="actions">
+      <%= f.submit "Créer", name: :commit %> 
+      <%= f.submit session[:mother_button], name: :parents_button %> 
+      <%= f.submit session[:father_button], name: :parents_button %> 
+      <%= f.submit session[:tutor_button], name: :parents_button %>
+   </div>
+<% end %>

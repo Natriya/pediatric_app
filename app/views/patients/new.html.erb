@@ -1,38 +1,32 @@
 <h1>Nouveau Patient</h1>
 
-<%= form_for(@patient) do |f| %>
-   <%= f.error_messages %>
+<% if session[:render_child] %> 
+   <%= render "form_child"  %>  
+
+<% elsif session[:render_mother] %> 
+   <%= form_for :mother, :url => patients_path do |f| %>
+      <%= f.error_messages %>
+  
+      <h2>Mère</h2>
+      <%= render "form_create_parents", :f => f  %>
+      
+   <% end %>
+
+
+       <h1>Rechercher Parents</h1>
+       <%= render "form_search_parents" %>
+
+
+
+<% elsif session[:render_father] %> 
+   <%= form_for :father, :url => patients_path do |f| %>
+      <%= f.error_messages %>
+  
+      <h2>Père</h2>
+      <%= render "form_create_parents", :f => f  %>
+      
+   <% end %>
    
-   <%= render "form_child", :f => f  %>
+<% end %> 
    
 
-    <% if session[:mother_render]  %>   
-       <%= f.fields_for :mother do |builder| %>
-          <h2>Mère</h2>
-          <% @render_gender=false %>
-          <%= render "form_parents", :f => builder  %>
-       <% end %>
-
-    <% end %>  
-
-    <% if session[:father_render] %>      
-       <%= f.fields_for :father do |builder| %>
-          <h2>Père</h2>
-          <% @render_gender=false %>
-          <%= render "form_parents", :f => builder  %>
-       <% end %>
-    <% end %>
-    
-    <% if session[:tutor_render] %>      
-       <%= f.fields_for :tutor do |builder| %>
-          <h2>Tuteur</h2>
-          <% @render_gender=true %>
-          <%= render "form_parents", :f => builder  %>
-       <% end %>
-    <% end %>
-   
-   <div class="actions">
-      <%= f.submit "Créer" %> 
-      <%= f.submit session[:mother_button] %> <%= f.submit session[:father_button] %> <%= f.submit session[:tutor_button] %>
-   </div>
-<% end %>

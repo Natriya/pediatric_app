@@ -51,6 +51,7 @@ rails g scaffold Patient  name:string surname:string sex:string birthday:date ne
  p = Patient.first
  
  params = { :member => { :name => 'Jack', :surname => 'smilJack', :gender => 'M', :father_attributes => { :name => 'smiling', :surname => 'smil', :gender => 'M' } } }
+ params3 = { :member => { :name => 'lili', :gender => 'M'}}
  p3 = Patient.new(params[:member])
 
 
