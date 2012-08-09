@@ -53,7 +53,8 @@
 
 <% @parents_search.each do |parent| %>
   <tr>
-	<td><%= radio_button_tag :parent_selected, "#{parent.id}"  %></td>
+	<% check = (parent.id == session[:current_parent_params]["id"]) %>
+	<td><%= radio_button_tag :parent_selected, "#{parent.id}", check %></td>
 	 
     <td><%= parent.name %></td>
     <td><%= parent.surname %></td>

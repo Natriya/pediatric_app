@@ -17,7 +17,10 @@ class PatientsController < ApplicationController
 		session[:patient_params] ||= {} 
 		session[:mother_params] ||= {}  
 		session[:father_params] ||= {} 
-		session[:tutor_params] ||= {}  
+		session[:tutor_params] ||= {}
+		session[:current_parent_params] ||= {}
+		
+		session[:q_mother_search] = nil
 	end
 	
 	def build_all   
@@ -29,14 +32,10 @@ class PatientsController < ApplicationController
 		@tutor = Tutor.new(session[:tutor_params])
 	end
 	
-	def new
-	
+	def new	
 		reset_session
-		
-		set_new_rendering_page(:child)
-		
 		init_params_session_for_new_patient
-		build_all
+		set_new_rendering_page(:child)
 	end
 	
 	
@@ -46,20 +45,60 @@ class PatientsController < ApplicationController
 
 
 	def set_new_rendering_page(rendering_page)
+		build_all
+		
 		session[:render_child] = (rendering_page == :child) 
 		session[:render_mother] = (rendering_page == :mother)  
 		session[:render_father] = (rendering_page == :father)  
-		session[:render_tutor] = (rendering_page == :tutor)  
+		session[:render_tutor] = (rendering_page == :tutor)
+		
+		
+		arr_session = {:mother => session[:mother_params], :father => session[:father_params], :tutor => session[:tutor_params]} 
+		session[:current_parent_params] = arr_session[rendering_page]
+			
 	end
 
 
   def build_mother_search
-	@search = Mother.search(params[:q])
+	session[:q_mother_search] = (params[:q].nil?)? session[:q_mother_search] : params[:q]
+	@search = Mother.search(session[:q_mother_search])
 	@parents_search = @search.result.paginate(:page => params[:page], :per_page => 5) 
   end 
   
+	def create_mother_motor
+		# par défaut on reste sur la même page
+		set_new_rendering_page(:mother)
+		
+		if params[:back_button]
+			set_new_rendering_page(:child)
+		elsif params[:search_parents_button]
+			build_mother_search
+		elsif params[:select_parent_button]
+			parent_selected = params[:parent_selected]
+			build_mother_search
+			
+			if(!parent_selected.nil?)
+				mother_selected = Mother.find(parent_selected)
+				if !mother_selected.nil?
+					session[:mother_params] = mother_selected.attributes
+					set_new_rendering_page(:father)
+				end
+			end
+		else
+			session[:mother_params] = params[:mother]
+			set_new_rendering_page(:mother)
+			empty_mother = Mother.new(:name=>"", :surname =>"", :cell_phone_number =>"", :email => "")
+			if (@mother.attributes == empty_mother.attributes) or @mother.valid?			
+				set_new_rendering_page(:father)	
+			else			
+				build_mother_search
+			end
+		end
+		
+		render 'new'  
+	end
+  
   def create
-     #debugger
     
     if  session[:render_child]
         session[:patient_params].deep_merge!(params[:patient]) if params[:patient]
@@ -73,33 +112,7 @@ class PatientsController < ApplicationController
 		render 'new'
 		
 	elsif session[:render_mother]
-	
-		session_mother = session[:mother_params]
-		params_mother = params[:mother]
-		if (!session_mother["id"].nil? and params_mother)
-			session_mother.deep_merge!(params_mother) 
-		end
-		build_all
-		
-		if params[:back_button]
-			set_new_rendering_page(:child)
-		elsif params[:search_parents_button]
-			build_mother_search
-		elsif params[:select_parent_button]
-			build_mother_search
-			mother_selected = Mother.find(params[:parent_selected])
-			session[:mother_params] = mother_selected.attributes
-			set_new_rendering_page(:father)
-		else
-			empty_mother = Mother.new(:name=>"", :surname =>"", :cell_phone_number =>"", :email => "")
-			if (@mother.attributes == empty_mother.attributes) or @mother.valid?
-				build_all
-				set_new_rendering_page(:father)	
-			else
-				build_mother_search
-			end
-		end
-		render 'new'
+		create_mother_motor
 	elsif session[:render_father]
 		build_all
 		build_mother_search
@@ -158,7 +171,6 @@ class PatientsController < ApplicationController
         @patient.build_tutor  if tutor
   end
 
-  # PUT /patients/1
   def update
     @patient = Patient.find(params[:id])
 
@@ -173,32 +185,12 @@ class PatientsController < ApplicationController
     end
   end
 
-  # DELETE /patients/1
   def destroy
     @patient = Patient.find(params[:id])
     @patient.destroy
 
     flash[:success] = "Patient supprime."
     redirect_to patients_path
-  end
-  
-  
-  
-  def parent_button_handler
-    parent_metaname = params[:parents_button].split().second
-    if parent_metaname == parents_metanames.first
-        session[:mother_button] = (session[:mother_button] == states_add_rm_mother.first)? states_add_rm_mother.second : states_add_rm_mother.first
-        session[:mother_render] = !session[:mother_render]
-        @patient.build_mother if session[:mother_render]
-    elsif parent_metaname == parents_metanames.second
-        session[:father_button] = (session[:father_button] == states_add_rm_father.first)? states_add_rm_father.second : states_add_rm_father.first
-        session[:father_render] = !session[:father_render]
-        @patient.build_father if session[:father_render]
-    elsif parent_metaname == parents_metanames.third
-        session[:tutor_button] = (session[:tutor_button] == states_add_rm_tutor.first)? states_add_rm_tutor.second : states_add_rm_tutor.first
-        session[:tutor_render] = !session[:tutor_render]
-        @patient.build_tutor if session[:tutor_render]
-    end
   end
  
 end
