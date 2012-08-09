@@ -25,11 +25,14 @@ class PatientsController < ApplicationController
 	
 	def build_all   
 		session_mother = session[:mother_params]
+		session_father = session[:father_params]
+		session_tutor = session[:tutor_params]
 		
 		@patient = Patient.new(session[:patient_params])
+
 		@mother = (session_mother["id"].nil? )? Mother.new(session_mother) : Mother.new
-		@father = Father.new(session[:father_params])
-		@tutor = Tutor.new(session[:tutor_params])
+		@father = (session_father["id"].nil? )? Father.new(session_father) : Father.new
+		@tutor = (session_tutor["id"].nil? )? Tutor.new(session_tutor) : Tutor.new
 	end
 	
 	def new	
@@ -62,40 +65,110 @@ class PatientsController < ApplicationController
   def build_mother_search
 	session[:q_mother_search] = (params[:q].nil?)? session[:q_mother_search] : params[:q]
 	@search = Mother.search(session[:q_mother_search])
+  end 
+  
+  def build_father_search
+	session[:q_father_search] = (params[:q].nil?)? session[:q_father_search] : params[:q]
+	@search = Father.search(session[:q_mother_search])
+  end
+  
+  def build_tutor_search
+	session[:q_tutor_search] = (params[:q].nil?)? session[:q_tutor_search] : params[:q]
+	@search = Tutor.search(session[:q_mother_search])
+  end
+  
+  def build_search(parent)
+  
+    build_mother_search if(parent == :mother)
+    build_father_search if(parent == :father)
+    build_tutor_search if(parent == :tutor)
+    
 	@parents_search = @search.result.paginate(:page => params[:page], :per_page => 5) 
   end 
   
-	def create_mother_motor
+	def steps
+      [:child, :mother, :father, :tutor]
+    end
+	
+	def next_step(current_step)
+      steps[steps.index(current_step)+1]
+    end
+    
+    def previous_step(current_step)
+      steps[steps.index(current_step)-1]
+    end
+	
+	
+	# exemple create_parent_motor(:mother)
+	def create_parent_motor(parent)
 		# par défaut on reste sur la même page
-		set_new_rendering_page(:mother)
+		set_new_rendering_page(parent)
 		
 		if params[:back_button]
-			set_new_rendering_page(:child)
+			set_new_rendering_page(previous_step(parent))
+			build_search(previous_step(parent))
 		elsif params[:search_parents_button]
-			build_mother_search
+			build_search(parent)
 		elsif params[:select_parent_button]
 			parent_selected = params[:parent_selected]
-			build_mother_search
+			build_search(parent)
 			
 			if(!parent_selected.nil?)
-				mother_selected = Mother.find(parent_selected)
-				if !mother_selected.nil?
-					session[:mother_params] = mother_selected.attributes
-					set_new_rendering_page(:father)
+				
+				specific_parent_selected = Mother.find(parent_selected) if (parent == :mother)
+				specific_parent_selected = Father.find(parent_selected) if (parent == :father)
+				specific_parent_selected = Tutor.find(parent_selected) if (parent == :tutor)
+				
+				if !specific_parent_selected.nil?
+					session[:"#{parent}_params"] = specific_parent_selected.attributes
+					set_new_rendering_page(next_step(parent))
+					
+					# TODO implémenter fin si on est dans l'etat session[:render_tutor]
 				end
 			end
 		else
-			session[:mother_params] = params[:mother]
-			set_new_rendering_page(:mother)
-			empty_mother = Mother.new(:name=>"", :surname =>"", :cell_phone_number =>"", :email => "")
-			if (@mother.attributes == empty_mother.attributes) or @mother.valid?			
-				set_new_rendering_page(:father)	
-			else			
-				build_mother_search
+# TODO implémenter fin si on est dans l'etat session[:render_tutor]
+
+			session[:"#{parent}_params"] = params[parent]
+			set_new_rendering_page(parent)
+			
+			empty_parent = Person.new(:name=>"", :surname =>"", :cell_phone_number =>"", :email => "")
+			empty_parent_attr = empty_parent.attributes
+			uniform_attr(empty_parent_attr)
+			
+			mother_attr = @mother.attributes
+			father_attr = @father.attributes
+			tutor_attr = @tutor.attributes
+			
+			uniform_attr(mother_attr)
+			uniform_attr(father_attr)
+			uniform_attr(tutor_attr)
+			
+			if (parent == :mother) 
+				current_attr = mother_attr
+				parent_is_valid = @mother.valid?
+			elsif (parent == :father)
+				current_attr = father_attr
+				parent_is_valid = @father.valid?
+			else
+				current_attr = tutor_attr
+				parent_is_valid = @tutor.valid?
+			end
+
+			if (current_attr == empty_parent_attr) or parent_is_valid
+				set_new_rendering_page(next_step(parent))
+				build_search(next_step(parent))
+			else
+				build_search(parent)
 			end
 		end
 		
 		render 'new'  
+	end
+	
+	def uniform_attr(attr)
+		attr.delete("gender")
+		attr.delete("type")
 	end
   
   def create
@@ -106,18 +179,17 @@ class PatientsController < ApplicationController
 		
 		#if @patient.valid?
 			set_new_rendering_page(:mother)	
-			build_mother_search
+			build_search(:mother)
 		#end
 		
 		render 'new'
 		
 	elsif session[:render_mother]
-		create_mother_motor
+		create_parent_motor(:mother)
 	elsif session[:render_father]
-		build_all
-		build_mother_search
-		set_new_rendering_page(:mother)	
-		render 'new'
+		create_parent_motor(:father)
+	elsif session[:render_tutor]
+		create_parent_motor(:tutor)
     else
      
      

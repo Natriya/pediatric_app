@@ -3,30 +3,44 @@
 <% if session[:render_child] %> 
    <%= render "form_child"  %>  
 
-<% elsif session[:render_mother] %> 
-   <%= form_for :mother, :url => patients_path do |f| %>
-      <%= f.error_messages %>
-  
-      <h2>Mère</h2>
-      <%= render "form_create_parents", :f => f  %>
-      
-   <% end %>
 
-
-       <h1>Rechercher Parents</h1>
-       <%= render "form_search_parents" %>
-
-
-
-<% elsif session[:render_father] %> 
-   <%= form_for :father, :url => patients_path do |f| %>
-      <%= f.error_messages %>
-  
-      <h2>Père</h2>
-      <%= render "form_create_parents", :f => f  %>
-      
-   <% end %>
-   
-<% end %> 
-   
+<% else %>
+	<% if session[:render_mother] %> 
+	   <%= form_for :mother, :url => patients_path do |f| %>
+	      <%= f.error_messages %>
+	  
+	      <h2>Mère</h2>
+	      <%= render "form_create_parents", :f => f  %>
+	      
+	   <% end %>
+	   
+	   <h1>Rechercher Mère</h1>
+	   
+	<% elsif session[:render_father] %> 
+	   <%= form_for :father, :url => patients_path do |f| %>
+	      <%= f.error_messages %>
+	  
+	      <h2>Père</h2>
+	      <%= render "form_create_parents", :f => f  %>
+	      
+	   <% end %>
+	   
+	   <h1>Rechercher Père</h1>
+	   
+	<% else %> 
+	   <%= form_for :tutor, :url => patients_path do |f| %>
+	      <%= f.error_messages %>
+	  
+	      <h2>Tuteur</h2>
+	      <%= render "form_create_parents", :f => f  %>
+	      
+	   <% end %>
+	   
+	   <h1>Rechercher Tuteur</h1>
+	   
+	<% end %> 
+	
+	<%= render "form_search_parents" %>
+	
+<% end %>    
 
