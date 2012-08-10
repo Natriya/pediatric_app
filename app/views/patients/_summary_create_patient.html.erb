@@ -1,0 +1,10 @@
+<h1>Résumé</h1>
+
+	<div class="actions">
+	   <%= form_for(@patient) do |f| %>
+			<%= f.error_messages %>
+			
+			<%= submit_tag "Précédent", :name => "back_button" %>
+			<%= submit_tag "Terminer", :name => "finish_button" %>
+		<% end %>
+   </div>
