@@ -4,7 +4,7 @@
    <%= render "form_child"  %>  
 
 
-<% else %>
+<% elsif !session[:render_summary] %>
 	<% if session[:render_mother] %> 
 	   <%= form_for :mother, :url => patients_path do |f| %>
 	      <%= f.error_messages %>
@@ -27,7 +27,7 @@
 	   
 	   <h1>Rechercher Père</h1>
 	   
-	<% else %> 
+	<% elsif session[:render_tutor]  %> 
 	   <%= form_for :tutor, :url => patients_path do |f| %>
 	      <%= f.error_messages %>
 	  
@@ -41,6 +41,8 @@
 	<% end %> 
 	
 	<%= render "form_search_parents" %>
-	
+
+<% else %>
+	<%= render "summary_create_patient" %>
 <% end %>    
 

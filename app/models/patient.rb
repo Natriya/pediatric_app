@@ -22,6 +22,7 @@ class Patient < ActiveRecord::Base
   def patient_has_parents?
      value = ((!father.nil? and father.valid?) or (!mother.nil? and mother.valid?) or (!tutor.nil? and tutor.valid?))
      errors.add(:base, "Patient must have Parents") unless value
+     value
   end
   
   
