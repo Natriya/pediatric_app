@@ -3,7 +3,9 @@
 <% if session[:render_child] %> 
    <%= render "form_child"  %>  
 
-
+<% elsif session[:render_addresses] %>
+	<%= render "form_create_addresses" %>
+	
 <% elsif !session[:render_summary] %>
 	<% if session[:render_mother] %> 
 	   <%= form_for :mother, :url => patients_path do |f| %>

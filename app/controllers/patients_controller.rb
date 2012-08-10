@@ -52,30 +52,42 @@ class PatientsController < ApplicationController
 			@father = (session_father["id"].nil? )? Father.new(session_father) : Father.find(session_father["id"])
 			@tutor = (session_tutor["id"].nil? )? Tutor.new(session_tutor) : Tutor.find(session_tutor["id"])
 			
-			if @mother.valid?
-				@mother.save
-				@patient.mother_id = @mother.id
-			end
+			exception_raised = false
 			
-			if @father.valid?
-				@father.save
-				@patient.father_id = @father.id
-			end
-			
-			if @tutor.valid?
-				@tutor.save
-				@patient.tutor_id = @tutor.id
-			end			
-
-			if @patient.valid? and @patient.patient_has_parents?
-				@patient.save
-				patient_saved = true
+			ActiveRecord::Base.transaction do
+				if @mother.valid?
+					@mother.save
+					@patient.mother_id = @mother.id
+				end
+				
+				if @father.valid?
+					@father.save
+					@patient.father_id = @father.id
+				end
+							
+				if @tutor.valid?
+					@tutor.save
+					@patient.tutor_id = @tutor.id
+				end			
+	
+				if @patient.valid? and @patient.patient_has_parents?
+					@patient.save
+					patient_saved = true
+				end
 			end
 		end
-		
+
+
 		if patient_saved
-			redirect_to @patient
+			if @patient.new_record?
+				flash[:error] = "Erreur lors de la sauvegarde du Patient\n: Patient non sauvegardé!"
+				render 'new'			
+			else
+				flash[:success] = "Nouveau patient créé avec succés"
+				redirect_to @patient
+			end
 		else
+			flash[:error] = "Erreur : Patient non sauvegardé!"
 			render 'new'
 		end
 	end
@@ -83,7 +95,9 @@ class PatientsController < ApplicationController
 	def new	
 		reset_session
 		init_params_session_for_new_patient
-		set_new_rendering_page(:child)
+		#set_new_rendering_page(:child)
+		set_new_rendering_page(:addresses)
+		@address_mother= Address.new
 	end
 	
 	
@@ -99,6 +113,7 @@ class PatientsController < ApplicationController
 		session[:render_mother] = (rendering_page == :mother)  
 		session[:render_father] = (rendering_page == :father)  
 		session[:render_tutor] = (rendering_page == :tutor)
+		session[:render_addresses]  = (rendering_page == :addresses)
 		session[:render_summary] = (rendering_page == :summary)
 		
 		
@@ -126,16 +141,18 @@ class PatientsController < ApplicationController
   
   
   def build_search(parent)
-  
-    build_mother_search if(parent == :mother)
-    build_father_search if(parent == :father)
-    build_tutor_search if(parent == :tutor)
-    
-	@parents_search = @search.result.paginate(:page => params[:page], :per_page => 5)  if (parent != :summary and parent != :child) 
+	if ( (parent == :mother) or (parent == :father) or (parent == :tutor) ) 
+	    build_mother_search if(parent == :mother)
+	    build_father_search if(parent == :father)
+	    build_tutor_search if(parent == :tutor)
+	    
+		@parents_search = @search.result.paginate(:page => params[:page], :per_page => 5) 
+	end 
   end 
   
 	def steps
-      [:child, :mother, :father, :tutor, :summary]
+      #[:addresses, :child, :mother, :father, :tutor, :summary]
+      [:child, :mother, :father, :tutor, :addresses, :summary]
     end
 	
 	def next_step(current_step)
@@ -249,6 +266,8 @@ class PatientsController < ApplicationController
 			create_parent_motor(:father)
 		elsif session[:render_tutor]
 			create_parent_motor(:tutor)
+		elsif session[:render_addresses]
+			render 'new'
 		else
 			if params[:back_button]
 				set_new_rendering_page(:tutor)
