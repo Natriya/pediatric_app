@@ -47,24 +47,53 @@ class PatientsController < ApplicationController
 		@patient = Patient.new(session[:patient_params])
 		
 		if @patient.valid?
-			@mother = ( session_mother.nil? or session_mother["id"].nil? )? Mother.new(session_mother) : Mother.find(session_mother["id"])
-			@father = ( session_father.nil? or session_father["id"].nil? )? Father.new(session_father) : Father.find(session_father["id"])
-			@tutor = ( session_tutor.nil? or session_tutor["id"].nil? )? Tutor.new(session_tutor) : Tutor.find(session_tutor["id"])
+			
+			address_mother = nil
+			address_father = nil
+			address_tutor = nil
+			
+			if ( session_mother.nil? or session_mother["id"].nil? )
+				@mother = Mother.new(session_mother)
+				address_mother = Address.new (session[:mother_page_params][:address])
+			else
+				@mother = Mother.find(session_mother["id"])
+				
+			end
+			
+			if ( session_father.nil? or session_father["id"].nil? )
+				@father = Father.new(session_father) 
+				address_father = Address.new (session[:father_page_params][:address])
+			else
+				@father = Father.find(session_father["id"])	
+			end
+			
+			if ( session_tutor.nil? or session_tutor["id"].nil? )
+				@tutor = Tutor.new(session_tutor)
+				address_tutor = Address.new (session[:tutor_page_params][:address])
+			else
+				@tutor = Tutor.find(session_tutor["id"])
+			end
 			
 			exception_raised = false
 			
 			ActiveRecord::Base.transaction do
 				if @mother.valid?
+					address_mother.save if (!address_mother.nil?)
+					@mother.address = address_mother
 					@mother.save
 					@patient.mother_id = @mother.id
 				end
 				
 				if @father.valid?
+				    address_father.save if (!address_father.nil?)
+					@father.address = address_father
 					@father.save
 					@patient.father_id = @father.id
 				end
 							
 				if @tutor.valid?
+					address_tutor.save if (!address_tutor.nil?)
+					@tutor.address = address_tutor
 					@tutor.save
 					@patient.tutor_id = @tutor.id
 				end			
@@ -79,9 +108,9 @@ class PatientsController < ApplicationController
 
 		if @patient.new_record?     
 			if patient_saved
-				flash[:error] = "Erreur lors de la sauvegarde du Patient\n: Patient non sauvegardé!"
+				flash.now[:error] = "Erreur lors de la sauvegarde du Patient\n: Patient non sauvegardé!"
 			else
-				flash[:error] = "Erreur : Patient non sauvegardé!"
+				flash.now[:error] = "Erreur : Patient non sauvegardé!"
 			end
 		else
 			flash[:success] = "Nouveau patient créé avec succés"	
@@ -187,7 +216,7 @@ class PatientsController < ApplicationController
 	
 	def previous_button_handler(current_step)
 		set_new_rendering_page(previous_step(current_step))
-		build_search(previous_step(current_step))	
+		build_search(previous_step(current_step))
 	end
 	
 	def next_button_handler(parent)
