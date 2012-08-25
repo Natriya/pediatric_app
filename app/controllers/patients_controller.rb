@@ -15,9 +15,9 @@ class PatientsController < ApplicationController
 	
 	def init_params_session_for_new_patient
 		session[:patient_params] ||= {} 
-		session[:mother_params] ||= {}  
-		session[:father_params] ||= {} 
-		session[:tutor_params] ||= {}
+		session[:mother_page_params] ||= {}  
+		session[:father_page_params] ||= {} 
+		session[:tutor_page_params] ||= {}
 		
 		session[:current_parent_params] ||= {}
 		
@@ -25,32 +25,31 @@ class PatientsController < ApplicationController
 	end
 	
 	def build_all   
-		session_mother = session[:mother_params]
-		session_father = session[:father_params]
-		session_tutor = session[:tutor_params]
+		session_mother = session[:mother_page_params][:mother]
+		session_father = session[:father_page_params][:father]
+		session_tutor = session[:tutor_page_params][:tutor]
 		
 		@patient = Patient.new(session[:patient_params])
 
-		@mother = (session_mother["id"].nil? )? Mother.new(session_mother) : Mother.new
-		@father = (session_father["id"].nil? )? Father.new(session_father) : Father.new
-		@tutor = (session_tutor["id"].nil? )? Tutor.new(session_tutor) : Tutor.new
+		@mother = (session_mother.nil? or session_mother["id"].nil? )? Mother.new(session_mother) : Mother.new
+		@father = (session_father.nil? or session_father["id"].nil? )? Father.new(session_father) : Father.new
+		@tutor = (session_tutor.nil? or session_tutor["id"].nil? )? Tutor.new(session_tutor) : Tutor.new
 	end
 	
 	def save_final_patient
 	
-		
 		patient_saved = false
 		
-		session_mother = session[:mother_params]
-		session_father = session[:father_params]
-		session_tutor = session[:tutor_params]
+		session_mother = session[:mother_page_params][:mother]
+		session_father = session[:father_page_params][:father]
+		session_tutor = session[:tutor_page_params][:tutor]
 		
 		@patient = Patient.new(session[:patient_params])
 		
 		if @patient.valid?
-			@mother = (session_mother["id"].nil? )? Mother.new(session_mother) : Mother.find(session_mother["id"])
-			@father = (session_father["id"].nil? )? Father.new(session_father) : Father.find(session_father["id"])
-			@tutor = (session_tutor["id"].nil? )? Tutor.new(session_tutor) : Tutor.find(session_tutor["id"])
+			@mother = ( session_mother.nil? or session_mother["id"].nil? )? Mother.new(session_mother) : Mother.find(session_mother["id"])
+			@father = ( session_father.nil? or session_father["id"].nil? )? Father.new(session_father) : Father.find(session_father["id"])
+			@tutor = ( session_tutor.nil? or session_tutor["id"].nil? )? Tutor.new(session_tutor) : Tutor.find(session_tutor["id"])
 			
 			exception_raised = false
 			
@@ -78,26 +77,21 @@ class PatientsController < ApplicationController
 		end
 
 
-		if patient_saved
-			if @patient.new_record?
+		if @patient.new_record?     
+			if patient_saved
 				flash[:error] = "Erreur lors de la sauvegarde du Patient\n: Patient non sauvegardé!"
-				render 'new'			
 			else
-				flash[:success] = "Nouveau patient créé avec succés"
-				redirect_to @patient
+				flash[:error] = "Erreur : Patient non sauvegardé!"
 			end
 		else
-			flash[:error] = "Erreur : Patient non sauvegardé!"
-			render 'new'
+			flash[:success] = "Nouveau patient créé avec succés"	
 		end
 	end
 	
 	def new	
 		reset_session
 		init_params_session_for_new_patient
-		#set_new_rendering_page(:child)
-		set_new_rendering_page(:addresses)
-		@address_mother= Address.new
+		set_new_rendering_page(:child)		
 	end
 	
 	
@@ -117,8 +111,18 @@ class PatientsController < ApplicationController
 		session[:render_summary] = (rendering_page == :summary)
 		
 		
-		arr_session = {:mother => session[:mother_params], :father => session[:father_params], :tutor => session[:tutor_params]} 
-		session[:current_parent_params] = arr_session[rendering_page]
+		session_mother = session[:mother_page_params][:mother]
+		session_father = session[:father_page_params][:father]
+		session_tutor = session[:tutor_page_params][:tutor]
+		
+		
+		session_parent_param = session[:"#{rendering_page}_page_params"]
+		fill_address = ( !session_parent_param.nil? and !session_parent_param[:address].nil? )
+		@address = (fill_address)? Address.new(session_parent_param[:address]) : Address.new
+		
+		
+		arr_session = {:mother => session_mother, :father => session_father, :tutor => session_tutor} 
+		session[:current_parent_params] = ( arr_session[rendering_page].nil? )? {} : arr_session[rendering_page]
 			
 	end
 
@@ -151,8 +155,8 @@ class PatientsController < ApplicationController
   end 
   
 	def steps
-      #[:addresses, :child, :mother, :father, :tutor, :summary]
-      [:child, :mother, :father, :tutor, :addresses, :summary]
+      [:child, :mother, :father, :tutor, :summary]
+      #[:child, :mother, :father, :tutor, :addresses, :summary]
     end
 	
 	def next_step(current_step)
@@ -174,16 +178,21 @@ class PatientsController < ApplicationController
 			specific_parent_selected = Tutor.find(parent_selected) if (parent == :tutor)
 			
 			if !specific_parent_selected.nil?
-				session[:"#{parent}_params"] = specific_parent_selected.attributes
+				session[:"#{parent}_page_params"][parent] = specific_parent_selected.attributes
 				set_new_rendering_page(next_step(parent))
 				build_search(next_step(parent))		
 			end
 		end
 	end
 	
+	def previous_button_handler(current_step)
+		set_new_rendering_page(previous_step(current_step))
+		build_search(previous_step(current_step))	
+	end
+	
 	def next_button_handler(parent)
 
-		session[:"#{parent}_params"] = params[parent]
+		session[:"#{parent}_page_params"] = params
 		set_new_rendering_page(parent)
 		
 		empty_parent = Person.new(:name=>"", :surname =>"", :cell_phone_number =>"", :email => "")
@@ -213,9 +222,14 @@ class PatientsController < ApplicationController
 			parent_is_valid = @tutor.valid?
 		end
 		
-		go_next_page = (go_next_page or parent_is_valid)  
+		blank_address = {"address"=>"", "phone_number"=>""}
 		
-		go_next_page = (go_next_page and ((current_attr == empty_parent_attr) or parent_is_valid))
+		go_next_page = (go_next_page or parent_is_valid)
+		all_attr_empty =  ( (current_attr == empty_parent_attr) and (params[:address] == blank_address) )
+		
+		go_next_page = (go_next_page and ( all_attr_empty or parent_is_valid))
+		
+		#debugger
 		if go_next_page
 			set_new_rendering_page(next_step(parent))
 			build_search(next_step(parent))
@@ -229,18 +243,15 @@ class PatientsController < ApplicationController
 		# par défaut on reste sur la même page
 		set_new_rendering_page(parent)
 		
-		if params[:back_button]
-			set_new_rendering_page(previous_step(parent))
-			build_search(previous_step(parent))
+		if params[:previous_button]
+			previous_button_handler(parent)
 		elsif params[:search_parents_button]
 			build_search(parent)
 		elsif params[:select_parent_button]
 			select_parent_button_handler(parent)
 		else
 			next_button_handler(parent)
-		end
-		
-		render 'new'  
+		end 
 	end
 	
 	def uniform_attr(attr)
@@ -250,7 +261,7 @@ class PatientsController < ApplicationController
   
 	def create
 		if  session[:render_child]
-			session[:patient_params].deep_merge!(params[:patient]) if params[:patient]
+			session[:patient_params] = params[:patient] if params[:patient]
 			build_all
 			
 			if @patient.valid?
@@ -258,29 +269,27 @@ class PatientsController < ApplicationController
 				build_search(:mother)
 			end
 			
-			render 'new'
-			
 		elsif session[:render_mother]
 			create_parent_motor(:mother)
 		elsif session[:render_father]
 			create_parent_motor(:father)
 		elsif session[:render_tutor]
 			create_parent_motor(:tutor)
-		elsif session[:render_addresses]
-			render 'new'
-		else
-			if params[:back_button]
-				set_new_rendering_page(:tutor)
-				build_search(:tutor)
-				render 'new'
+		else # render summary
+			if params[:previous_button]
+				previous_button_handler(steps.last)
 			else
 				save_final_patient
 			end
 		end
+		
+		if @patient.new_record?
+			render 'new'
+		else
+			redirect_to @patient
+		end
 	end
-  
-  
-
+ 
 
   def update
     @patient = Patient.find(params[:id])

@@ -1,7 +1,8 @@
 class Person < ActiveRecord::Base
-  attr_accessible :address_id, :birthday, :cell_phone_number, :email, :name, 
-                  :gender, :surname, :company_person_identification, 
-                  :occupation
+  attr_accessible :address_id, :birthday, :cell_phone_number, :email, 
+				  :name, :gender, :surname, 
+				  :company_person_identification, :occupation, :address
+                  
   attr_writer :current_step
 
   belongs_to :address
@@ -10,8 +11,6 @@ class Person < ActiveRecord::Base
   
   # parameters if person belongs to a company
   belongs_to :company
-  
-
   
   #validates_associated :patients
 

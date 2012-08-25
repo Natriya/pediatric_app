@@ -30,8 +30,20 @@
         <%= f.text_field :email %>
     </div>
     
+    <%= fields_for :address do |builder| %>
+	    <div class="field">
+			<%= builder.label :address, "Adresse" %> <br />
+			<%= builder.text_area :address %>
+	    </div>
+	
+		<div class="field">
+			<%= builder.label :phone_number, "Téléphone Fixe" %> <br />
+			<%= builder.telephone_field :phone_number %>
+		</div>
+	<% end %>
+    
     
    <div class="actions">
-	    <%= f.submit "Précédent", :name => "back_button" %>
+	    <%= f.submit "Précédent", :name => "previous_button" %>
 	    <%= f.submit "Suivant", :name => "next_button" %>
    </div>

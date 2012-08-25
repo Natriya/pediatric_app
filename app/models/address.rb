@@ -1,5 +1,7 @@
 class Address < ActiveRecord::Base
   attr_accessible :address, :phone_number
+  
+  ADDRESS_ENUM = %w[Adresse1 Adresse2 Adresse3]
 end
 # == Schema Information
 #
