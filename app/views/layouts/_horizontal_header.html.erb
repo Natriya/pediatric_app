@@ -1,17 +1,17 @@
-<nav class="round">
+<div id="horizontal_nav" class="round">
  <ul>
-    <li><%= link_to "Accueil", root_path %></li>
    <% if signed_in? %>
-    <li><%= link_to "Deconnection", signout_path, :method => :delete %></li>
-    
+   
        <% if current_user.admin? %> 
         <li>Administrateur</li> 
        <% else %> 
         <li>Utilisateur</li> 
        <% end %>  
        
+        <li><%= link_to "Deconnection", signout_path, :method => :delete %></li>
+       
    <% else %>
     <li><%= link_to "S'identifier", signin_path %></li>
    <% end %>
  </ul>
-</nav>  
+</div>  

@@ -9,10 +9,10 @@
     
 </head>
 <body>
-    <div class="container">
+    <div id="container">
         <%= render'layouts/header' %>
         
-        <section class="content round">
+        <section id="content" class="round">
             <% flash.each do |key, value| %>
             <%= content_tag(:div, value, :class => "flash #{key}") %>
             <% end %>

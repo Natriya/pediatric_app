@@ -1,23 +1,32 @@
-#navigation {
-    width: 100px;
+#vertical_nav {
+    width: 160px;
     float : left;
-    margin-top: 20px;
 }
-#navigation ul {
+#vertical_nav ul {
     margin: 0px;
     padding: 0px;
+    
+    -moz-border-radius:    10px;
+	-webkit-border-radius: 10px;
+	border-radius:       10px;
 }
-ul.top-level { background: #666; }
+#vertical_nav ul.top-level { background: white; }
 
-#navigation li { list-style: none; }
+#vertical_nav li { 
+	list-style: none; 
+	
+	-moz-border-radius:    10px;
+	-webkit-border-radius: 10px;
+	border-radius:       10px;
+}
 
-ul.top-level li {
+#vertical_nav ul.top-level li {
     border-bottom: #fff solid;
     border-top: #fff solid;
     border-width: 1px;
 }
-#navigation a {
-    color: #fff;
+#vertical_nav a {
+    color: black;
     cursor: pointer;
     display:block;
     height:25px;
@@ -26,17 +35,17 @@ ul.top-level li {
     text-decoration:none;
     width:100%;
 }
-#navigation a:hover { text-decoration:underline; }
+#vertical_nav a:hover { text-decoration:underline; }
 
-#navigation li:hover {
+#vertical_nav li:hover {
    background: #f90;
    position: relative;
 }
 
-ul.sub-level { display: none; }
+#vertical_nav ul.sub-level { display: none; }
 
-li:hover .sub-level {
-    background: #999;
+#vertical_nav li:hover .sub-level {
+    background: #9FF36F;
     border: #fff solid;
     border-width: 1px;
     display: block;
@@ -45,15 +54,15 @@ li:hover .sub-level {
     top: 5px;
 }
 
-ul.sub-level li {
+#vertical_nav ul.sub-level li {
     border: none;
     float:left;
     width:150px; 
 }
 
-#navigation .sub-level { background: #999; }
-#navigation .sub-level .sub-level { background: #09C; }
+#vertical_nav .sub-level { background: #999; }
+#vertical_nav .sub-level .sub-level { background: #09C; }
                 
 /*IE RESET HELPER*/
-li:hover .sub-level .sub-level { display:none; }
-.sub-level li:hover .sub-level { display:block; }   
+#vertical_nav li:hover .sub-level .sub-level { display:none; }
+#vertical_nav .sub-level li:hover .sub-level { display:block; }   
