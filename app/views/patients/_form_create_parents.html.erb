@@ -1,4 +1,43 @@
+<div id=new_parent class="round"> 
 
+<div id=new_parent_float>
+  <div id=new_parent_address>  
+    <%= fields_for :address do |builder| %>
+	    <div class="field">
+			<%= builder.label :address, "Adresse" %> <br />
+			<%= builder.text_area :address %>
+	    </div>
+	
+		<div class="field">
+			<%= builder.label :phone_number, "Téléphone Fixe" %> <br />
+			<%= builder.telephone_field :phone_number %>
+		</div>
+	<% end %>
+  </div>
+  
+  <br />
+  
+  <div id=new_parent_occupation class="round">
+<%= fields_for :company do |builder| %>  
+    <div class="field">
+        <%= builder.label :company, "Entreprise" %> <br />
+        <%= builder.text_field :company %> 
+    </div>
+<% end %>
+    
+    <div class="field">
+        <%= f.label :company_person_identification, "Matricule" %> <br />
+        <%= f.text_field :company_person_identification %>
+    </div>
+    
+    <div class="field">
+        <%= f.label :occupation, "Job" %> <br />
+        <%= f.text_field :occupation %>
+    </div>
+  </div>
+</div>
+
+  <div id=new_parent_principal_info>  
     <div class="field">
         <%= f.label :name, "Nom*" %> <br />
         <%= f.text_field :name %> 
@@ -24,26 +63,22 @@
     <div class="field">
         <%= f.label :cell_phone_number, "Téléphone Portable" %> <br />
         <%= f.telephone_field :cell_phone_number %>
+    </div>
     
     <div class="field">
         <%= f.label :email, "E-Mail" %> <br />
         <%= f.text_field :email %>
     </div>
-    
-    <%= fields_for :address do |builder| %>
-	    <div class="field">
-			<%= builder.label :address, "Adresse" %> <br />
-			<%= builder.text_area :address %>
-	    </div>
-	
-		<div class="field">
-			<%= builder.label :phone_number, "Téléphone Fixe" %> <br />
-			<%= builder.telephone_field :phone_number %>
-		</div>
-	<% end %>
-    
-    
+  </div>
+ 
+   <% if !session[:render_tutor] %> 
+	<br /><br />
+   <% end %>
+   <br /><br /><br />
+   
    <div class="actions">
 	    <%= f.submit "Précédent", :name => "previous_button" %>
 	    <%= f.submit "Suivant", :name => "next_button" %>
    </div>
+   
+</div>

@@ -11,7 +11,7 @@
     <%= f.text_field :surname %>
   </div>
   <div class="field">
-    <%= f.label :gender, "Sex*" %><br />
+    <%= f.label :gender, "Sexe*" %><br />
     <%= f.select :gender, ["M","F"], :include_blank => true %>
   </div>
   <div class="field">
@@ -19,8 +19,8 @@
     <%= f.date_select :birthday, :order => [:day, :month, :year], :start_year => 1990, :use_month_numbers => true, :include_blank => true %>
   </div>
 
-   
-   <div class="actions">      
-	  <%= f.submit "Suivant", :name => "next_button" %>
+   <br /> <br />
+   <div class="actions">  
+	  <%= f.submit "Suivant", :name => "next_button", :class => "button" %>
    </div>
 <% end %>

@@ -1,38 +1,48 @@
 
-
+<div id="search_parent" class="round">
+	
 <%= search_form_for @search, :url => patients_path, :method => "post" do |f| %>
+
     <div class="field">
         <%= f.label :name_cont, "Nom" %>
         <%= f.text_field :name_cont , :size => 15%> 
-        
+     </div>
+    
+    <div class="field">       
         <%= f.label :surname_cont, "Prénom" %>
         <%= f.text_field :surname_cont, :size => 15 %>
-        
-        <br />  
-        
+    </div>
+    
+    <div class="field">
         <%= f.label :birthday %>
         <%= f.date_select :birthday_cont, :order => [:day, :month, :year], :start_year => 1900, :include_blank => true %>
-        
+
+    </div>
+    
+    <div class="field">
+<% if session[:render_tutor] %>       
         <%= f.label :gender, "Sexe" %>
         <%= f.select :gender_matches, ["M","F"], :include_blank => true %>   
-        
-        <br /> 
-        
-        <%= f.label :cell_phone_number_cont, "Téléphone Portable" %> 
+<% end %> 
+    </div>
+ 
+    <div class="field">
+        <%= f.label :cell_phone_number_cont, "Portable" %> 
         <%= f.telephone_field :cell_phone_number_cont, :size => 15 %>
-       
-        <br />
-       
+    </div>
+   
+    <div class="field">
         <%= f.label :email_cont, "E-Mail" %> 
         <%= f.text_field :email_cont %>
-        
-   
     </div>
+    
+    <br />
     <div class="action">
       <%= f.submit "Chercher", :name => "search_parents_button" %>
     </div>
-<% end %>
 
+<% end %>
+</div>
 
 
 <br />
@@ -47,7 +57,9 @@
 	<th>Sélection</th>
     <th><%= sort_link @search, :name, "Nom" %></th>
     <th><%= sort_link @search, :surname, "Prénom" %></th>
+<% if session[:render_tutor] %> 
     <th><%= sort_link @search, :gender, "Sexe" %></th>
+<% end %>
     <th><%= sort_link @search, :birthday, "Naissance" %></th>
   </tr>
 
@@ -58,7 +70,9 @@
 	 
     <td><%= parent.name %></td>
     <td><%= parent.surname %></td>
+<% if session[:render_tutor] %> 
     <td><%= parent.gender %></td>
+<% end %>
     <td><%= parent.birthday %></td>    
   </tr>
 <% end %>

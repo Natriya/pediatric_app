@@ -185,7 +185,6 @@ class PatientsController < ApplicationController
   
 	def steps
       [:child, :mother, :father, :tutor, :summary]
-      #[:child, :mother, :father, :tutor, :addresses, :summary]
     end
 	
 	def next_step(current_step)
@@ -224,7 +223,7 @@ class PatientsController < ApplicationController
 		session[:"#{parent}_page_params"] = params
 		set_new_rendering_page(parent)
 		
-		empty_parent = Person.new(:name=>"", :surname =>"", :cell_phone_number =>"", :email => "")
+		empty_parent = Person.new(:name=>"", :surname =>"", :cell_phone_number =>"", :email => "", :company_person_identification => "", :occupation => "")
 		empty_parent_attr = empty_parent.attributes
 		uniform_attr(empty_parent_attr)
 		
