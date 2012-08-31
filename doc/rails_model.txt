@@ -153,6 +153,17 @@ Voucher -- Vouchers
   belongs_to :insurance_company* --insurance_company_id
   belongs_to :person* (adherent)  --person_id* (validates: parent_of_patient)
 
+
+CompanyContact
+   full_name* : string
+   phone_number : string
+   cell_phone_number : string
+   
+   belongs_to :company --company_id
+   belongs_to :insurance_company --insurance_company_id
+   
+
+
 ==============================
 
 -- Entreprise de l'adhérent
@@ -160,6 +171,8 @@ Company -- Companies
   name* : string
   address : text
   phone_number : string
+  
+  has_many :CompanyContact
   
     DATA
         SENELEC, SDE, Sonatel
@@ -170,9 +183,12 @@ Company -- Companies
 -- Compagnie d'assurance
 InsuranceCompany -- InsuranceCompanies
   name* : string
-  Interlocuteur : string
+  type* : string [IPM|Assurance]
   address : text
   phone_number : string
+  
+  has_many :CompanyContact
+  
   
     DATA
         IPM (SENELEC, SDE, BOKK, Inter Entreprise de la Petite Cote, SSPT : Société Sénégalaise des Phosphate de Thies, SONATEL)

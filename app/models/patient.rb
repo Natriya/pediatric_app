@@ -2,7 +2,7 @@
 
 class Patient < ActiveRecord::Base
   attr_accessible :birthday, :father_id, :mother_id, :name, :next_appointment_date, 
-                  :gender, :surname, :tutor_id, 
+                  :gender, :surname, :tutor_id, :company_patient_identification,
                   :mother_attributes, :father_attributes, :tutor_attributes
   
   attr_writer :current_step

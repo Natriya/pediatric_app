@@ -55,3 +55,8 @@ rails g scaffold Patient  name:string surname:string sex:string birthday:date ne
  p3 = Patient.new(params[:member])
 
 
+rails g scaffold CompanyContact full_name:string phone_number:string cell_phone_number:string company_id:integer insurance_company_id:integer
+rails g scaffold Company name:string address:text phone_number:string
+
+rails generate migration AddCompanyPatientIdentificationIdToPatient company_patient_identification:integer
+

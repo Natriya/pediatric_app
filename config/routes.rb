@@ -1,5 +1,9 @@
 PediatricApp::Application.routes.draw do
 
+  resources :companies
+
+  resources :company_contacts
+
   resources :patients
 
   resources :users, :except => [:show]
