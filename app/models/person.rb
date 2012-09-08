@@ -16,8 +16,8 @@ class Person < ActiveRecord::Base
 
   validates :name, :surname, :presence => true
   validates :gender, :inclusion => { :in => %w(M F) }
-  validates :company_person_identification, :numericality => {:only_integer => true, :greater_than => 0 } , 
-                                            :allow_nil => true
+  #validates :company_person_identification, :numericality => {:only_integer => true, :greater_than => 0 } , 
+  #                                          :allow_nil => true
    
   
    

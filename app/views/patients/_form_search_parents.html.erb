@@ -1,6 +1,10 @@
-
+<h2> Rechercher <%= session[:current_parent] %> </h2>
 
 <div id="search_parent" class="round">
+
+
+
+<div id="search_parent_form" class="round">
 	
 <%= search_form_for @search, :url => patients_path, :method => "post" do |f| %>
 
@@ -16,7 +20,7 @@
     
     <div class="field">
         <%= f.label :birthday %>
-        <%= f.date_select :birthday_cont, :order => [:day, :month, :year], :start_year => 1900, :include_blank => true %>
+        <%= parent_birthday f, :birthday_cont %>
 
     </div>
     
@@ -33,13 +37,13 @@
     </div>
    
     <div class="field">
-        <%= f.label :email_cont, "E-Mail" %> 
+        <%= f.label :email_cont, "Courriel" %> 
         <%= f.text_field :email_cont %>
     </div>
     
     <br />
     <div class="action">
-      <%= f.submit "Chercher", :name => "search_parents_button" %>
+      <%= f.submit "Chercher", :name => "search_parent_button" %>
     </div>
 
 <% end %>
@@ -49,9 +53,9 @@
 <br />
 <h1>Liste</h1>
 
-<%= will_paginate @parents_search %>
+<%= will_paginate  @parents_search, :params => { :action => 'new' } %>
 
-<%= form_tag :url => patients_path do |f| %>
+<%= form_tag :url => patients_path, :action => 'create' do |f| %>
 
 <table>
   <tr>
@@ -79,8 +83,12 @@
 <% end %>
 </table>
 
-<%= submit_tag "Choisir", :name => "select_parent_button" %>
+<%= will_paginate  @parents_search, :params => { :action => 'new' } %>
+
+<%= submit_tag "Choisir", :name => "select_parent_button"%>
 <% end %>
 
 
-<%= will_paginate  @parents_search %>
+
+
+</div>

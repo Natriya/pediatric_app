@@ -2,30 +2,34 @@
    <%= f.error_messages %>
   
   <h2>Patient</h2>
-  <div class="field">
-    <%= f.label :name, "Nom*" %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :surname, "Prénom*" %><br />
-    <%= f.text_field :surname %>
-  </div>
-  <div class="field">
-    <%= f.label :gender, "Sexe*" %><br />
-    <%= f.select :gender, ["M","F"], :include_blank => true %>
-  </div>
-  <div class="field">
-    <%= f.label :birthday, "Date de Naissance" %><br />
-    <%= f.date_select :birthday, :order => [:day, :month, :year], :start_year => 1990, :use_month_numbers => true, :include_blank => true %>
-  </div>
-  
-  <div class="field">
-     <%= f.label :company_patient_identification, "Matricule" %> <br />
-     <%= f.text_field :company_patient_identification %>
-   </div>
 
-   <br /> <br />
-   <div class="actions">  
-	  <%= f.submit "Suivant", :name => "next_button", :class => "button" %>
-   </div>
+	<div class="new_human round"> 
+	  <div class="field">
+	    <%= f.label :name, "Nom*" %><br />
+	    <%= f.text_field :name %>
+	  </div>
+	  <div class="field">
+	    <%= f.label :surname, "Prénom*" %><br />
+	    <%= f.text_field :surname %>
+	  </div>
+	  <div class="field">
+	    <%= f.label :gender, "Sexe*" %><br />
+	    <%= f.select :gender, ["M","F"], :include_blank => true %>
+	  </div>
+	  <div class="field">
+	    <%= f.label :birthday, "Date de Naissance" %><br />
+	    <%= child_birthday f, :birthday %>
+	  </div>
+	  
+	  <div class="field">
+	     <%= f.label :company_patient_identification, "Matricule" %> <br />
+	     <%= f.text_field :company_patient_identification %>
+	   </div>
+	
+	   <br /> <br />
+	   <div class="actions"> 
+		  <%= f.submit "Précédent", :name => "previous_button" %>
+		  <%= f.submit "Suivant", :name => "next_button", :class => "button" %>
+	   </div>
+	</div>
 <% end %>

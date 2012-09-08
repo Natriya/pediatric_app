@@ -11,7 +11,7 @@
         <br />  
         
         <%= f.label :birthday %>
-        <%= f.date_select :birthday_cont, :order => [:day, :month, :year], :start_year => 1990, :include_blank => true %>
+        <%= child_birthday f, :birthday %>
         
         <%= f.label :gender, "Sexe" %>
         <%= f.select :gender_matches, ["M","F"], :include_blank => true %>   
@@ -19,7 +19,7 @@
         <br />    
         
         <%= f.label :next_appointment_date, "Prochaine RDV" %>
-        <%= f.date_select :next_appointment_date_cont, :include_blank => true%> <br />
+        <%= custrom_date_helper f, :next_appointment_date_cont %> <br />
         
         <br /> 
         

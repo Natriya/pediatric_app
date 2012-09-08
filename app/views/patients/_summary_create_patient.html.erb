@@ -1,10 +1,44 @@
 <h1>Résumé</h1>
 
-	<div class="actions">
+	<div id="summary_content">
 	   <%= form_for(@patient) do |f| %>
 			<%= f.error_messages %>
 			
+		<div class="new_human round"> 
+		  <h2>Patient</h2>
+		  <div class="field">
+		    <%= f.label :name, "Nom: " %>
+		    <%= f.text_field :name, :readonly => true %>
+		  </div>
+		  <div class="field">
+		    <%= f.label :surname, "Prénom: " %>
+		    <%= f.text_field :surname, :readonly => true %>
+		  </div>
+		  <div class="field">
+		    <%= f.label :gender, "Sexe: " %>
+		    <%= f.text_field :gender, :readonly => true, :style => "width: 1em;" %>
+		  </div>
+		  <div class="field">
+		    <%= f.label :birthday, "Date de Naissance: " %>
+		    <%= f.text_field :birthday, :readonly => true %>
+		  </div>
+		  
+		  <div class="field">
+		     <%= f.label :company_patient_identification, "Matricule: " %>
+		     <%= f.text_field :company_patient_identification, :readonly => true %>
+		   </div>				
+		</div>
+		
+		<div class="new_human round"> 
+		  <h2>Mere</h2>
+		  <%= render "fields_summary_parents" %>
+		</div>
+		
+		<br />	
+		<div class="actions">
 			<%= submit_tag "Précédent", :name => "previous_button" %>
 			<%= submit_tag "Terminer", :name => "finish_button" %>
+		</div>
+		
 		<% end %>
    </div>

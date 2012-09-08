@@ -1,4 +1,7 @@
-<div id=new_parent class="round"> 
+
+<h2> Nouveau </h2>
+
+<div class="new_human round"> 
 
 <div id=new_parent_float>
   <div id=new_parent_address>  
@@ -21,7 +24,8 @@
 <%= fields_for :company do |builder| %>  
     <div class="field">
         <%= builder.label :company, "Entreprise" %> <br />
-        <%= builder.text_field :company %> 
+
+        <%= builder.collection_select :company_id, Company.all, :id, :name, :include_blank => true, :selected => @company_id_selected %>
     </div>
 <% end %>
     
@@ -53,11 +57,11 @@
         <%= f.label :gender, "Sexe*" %> <br />
         <%= f.select :gender, ["M","F"], :include_blank => true %> 
     </div>
-<% end %> 
+<% end %>
 
     <div class="field">
         <%= f.label :birthday, "Date de Naissance" %> <br />
-        <%= f.date_select :birthday, :order => [:day, :month, :year], :start_year => 1990, :use_month_numbers => true, :include_blank => true %> <br />
+        <%= parent_birthday f, :birthday %> <br />
     </div>
     
     <div class="field">
@@ -66,18 +70,19 @@
     </div>
     
     <div class="field">
-        <%= f.label :email, "E-Mail" %> <br />
+        <%= f.label :email, "Courriel" %> <br />
         <%= f.text_field :email %>
     </div>
   </div>
- 
-   <% if !session[:render_tutor] %> 
-	<br /><br />
+
+   <% if session[:render_tutor] %> 
+	<br />
    <% end %>
-   <br /><br /><br />
    
    <div class="actions">
+      <% if !session[:render_mother] %> 	   
 	    <%= f.submit "Précédent", :name => "previous_button" %>
+	  <% end %>
 	    <%= f.submit "Suivant", :name => "next_button" %>
    </div>
    

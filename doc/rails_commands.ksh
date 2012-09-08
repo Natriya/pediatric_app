@@ -60,3 +60,7 @@ rails g scaffold Company name:string address:text phone_number:string
 
 rails generate migration AddCompanyPatientIdentificationIdToPatient company_patient_identification:integer
 
+rails generate migration RemoveCompanyPersonIdentificationFromPerson company_person_identification:integer
+rails generate migration AddCompanyPersonIdentificationToPerson company_person_identification:string
+
+
